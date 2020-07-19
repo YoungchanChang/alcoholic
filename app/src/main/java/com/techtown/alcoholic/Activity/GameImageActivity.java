@@ -62,13 +62,10 @@ public class GameImageActivity extends AppCompatActivity implements View.OnClick
 
     File camera_file;
     public static final String FILE_NAME = "profile.jpg";
-    public File getCameraFile() {
-        File storageDir = getApplicationContext().getFilesDir();
-        return new File(storageDir, FILE_NAME);
-    }
+
     public void startCamera() {
 
-            Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+
             //카메라는 파일이 저장될 위치를 명시하고, fileProvider에 authority를 명시해야한다.
             // 1. Manifest의 authority확인 2. Manifest안에 Provider에 존재하는 meta-data확인
             // 3. meta-data의 저장경로 확인(cache에 저장할것인지 EXTERNAL에 저장할 것인지)
@@ -79,16 +76,23 @@ public class GameImageActivity extends AppCompatActivity implements View.OnClick
             }
             Uri photoUri = FileProvider.getUriForFile(this, "org.techtown.alcoholic.fileprovider", camera_file);
 
+            Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
             intent.putExtra(MediaStore.EXTRA_OUTPUT, photoUri);
             intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION|Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
             startActivityForResult(intent, CAMERA_IMAGE_REQUEST);
 
     }
-
+    public File getCameraFile() {
+        File storageDir = getApplicationContext().getFilesDir();
+        return new File(storageDir, FILE_NAME);
+    }
     Bitmap bitmapPicture;
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        Log.d(TAG, "getLog" + requestCode);
+        Log.d(TAG, "getLog2" + resultCode);
+        Log.d(TAG, "getLog3" + data);
          if (requestCode == CAMERA_IMAGE_REQUEST && resultCode == RESULT_OK && data != null) {
 
             //사진 이미지가 커서 업로드 되지 않는다면 주석처리한 코드로 설정
@@ -97,6 +101,7 @@ public class GameImageActivity extends AppCompatActivity implements View.OnClick
 //            Bitmap bitmap = BitmapFactory.decodeFile(camera_file.getAbsolutePath(), options);
 
             bitmapPicture = BitmapFactory.decodeFile(camera_file.getAbsolutePath());
+            Log.d(TAG, "onActivityResult:"+bitmapPicture);
             imageMyPic.setImageBitmap(bitmapPicture);
             //sendStringImg(bitmapPicture);
 
