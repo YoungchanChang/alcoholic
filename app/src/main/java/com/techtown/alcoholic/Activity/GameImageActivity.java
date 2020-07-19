@@ -31,6 +31,7 @@ import com.google.firebase.ml.vision.FirebaseVision;
 import com.google.firebase.ml.vision.cloud.FirebaseVisionCloudDetectorOptions;
 
 import com.google.firebase.ml.vision.common.FirebaseVisionImage;
+import com.google.firebase.ml.vision.label.FirebaseVisionImageLabel;
 import com.google.firebase.ml.vision.label.FirebaseVisionImageLabeler;
 import com.pedro.library.AutoPermissions;
 import com.pedro.library.AutoPermissionsListener;
@@ -148,7 +149,25 @@ public class GameImageActivity extends AppCompatActivity implements View.OnClick
                 FirebaseVisionImage image = FirebaseVisionImage.fromBitmap(rotatedBitmap);
                 FirebaseVisionImageLabeler labeler = FirebaseVision.getInstance()
                         .getCloudImageLabeler();
-
+                labeler.processImage(image)
+                        .addOnSuccessListener(new OnSuccessListener<List<FirebaseVisionImageLabel>>() {
+                            @Override
+                            public void onSuccess(List<FirebaseVisionImageLabel> labels) {
+                                Log.d(TAG, "AfterFirebase" + labels);
+                                for (FirebaseVisionImageLabel label: labels) {
+                                    String text = label.getText();
+                                    String entityId = label.getEntityId();
+                                    float confidence = label.getConfidence();
+                                    Log.d(TAG, "LabelImage "+text+" AND "+entityId+" AND "+confidence);
+                                }
+                            }
+                        })
+                        .addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                Log.d(TAG, "FailureFirebase" + e);
+                            }
+                        });
             }
         }
     }
