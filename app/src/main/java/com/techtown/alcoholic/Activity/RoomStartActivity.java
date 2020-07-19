@@ -16,7 +16,8 @@ import com.techtown.alcoholic.R;
 public class RoomStartActivity extends AppCompatActivity implements AutoPermissionsListener, View.OnClickListener {
     private static final String TAG = "GameLog";
     Button btnShakeIt;
-    Button btnImageGame;
+    Button btnImageGame,btnInitialSound;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,6 +27,8 @@ public class RoomStartActivity extends AppCompatActivity implements AutoPermissi
         btnShakeIt.setOnClickListener(this);
         btnImageGame = findViewById(R.id.btnImageGame);
         btnImageGame.setOnClickListener(this);
+        btnInitialSound= findViewById(R.id.btnInitialSound);
+        btnInitialSound.setOnClickListener(this);
         AutoPermissions.Companion.loadAllPermissions(this, 101);
     }
 
@@ -58,6 +61,9 @@ public void onGranted(int requestCode, String[] permissions) {
                 startActivity(intent2);
                 Log.d(TAG, "onClick: ");
                 break;
+            case R.id.btnInitialSound:
+                Intent intent3 = new Intent(RoomStartActivity.this,GameInitialSound.class);
+                startActivity(intent3);
             default:
                 Log.d(TAG, "defaultTest");
         }
