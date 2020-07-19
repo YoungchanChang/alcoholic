@@ -6,6 +6,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.FileProvider;
 
 import android.Manifest;
+import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.ContentResolver;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -22,6 +24,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
@@ -31,6 +34,7 @@ import com.google.firebase.ml.vision.FirebaseVision;
 import com.google.firebase.ml.vision.cloud.FirebaseVisionCloudDetectorOptions;
 
 import com.google.firebase.ml.vision.common.FirebaseVisionImage;
+import com.google.firebase.ml.vision.label.FirebaseVisionCloudImageLabelerOptions;
 import com.google.firebase.ml.vision.label.FirebaseVisionImageLabel;
 import com.google.firebase.ml.vision.label.FirebaseVisionImageLabeler;
 import com.pedro.library.AutoPermissions;
@@ -56,8 +60,13 @@ public class GameImageActivity extends AppCompatActivity implements View.OnClick
 
 
     ImageView imageMyPic;
+    ImageView imageRight;
+
+    TextView textSentence;
     Button btnTakePicture;
     File file;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -73,8 +82,11 @@ public class GameImageActivity extends AppCompatActivity implements View.OnClick
         //FirebaseVisionImage image = FirebaseVisionImage.fromBitmap(bitmap);
         //startCamera();
         imageMyPic = findViewById(R.id.pictureView);
+        imageRight = findViewById(R.id.imageRight);
+        textSentence = findViewById(R.id.textSentence);
         btnTakePicture = findViewById(R.id.btnTakePicture);
         btnTakePicture.setOnClickListener(this);
+
     }
 
 
@@ -143,12 +155,16 @@ public class GameImageActivity extends AppCompatActivity implements View.OnClick
                 }
                 imageMyPic.setImageBitmap(rotatedBitmap);
 
-
+                showProgressDialogue(this, "사진을 확인중입니다.");
                 Log.d(TAG, "BeforeFirebase");
 
                 FirebaseVisionImage image = FirebaseVisionImage.fromBitmap(rotatedBitmap);
+                FirebaseVisionCloudImageLabelerOptions options2 =
+                     new FirebaseVisionCloudImageLabelerOptions.Builder()
+                         .setConfidenceThreshold(0.7f)
+                         .build();
                 FirebaseVisionImageLabeler labeler = FirebaseVision.getInstance()
-                        .getCloudImageLabeler();
+                     .getCloudImageLabeler(options2);
                 labeler.processImage(image)
                         .addOnSuccessListener(new OnSuccessListener<List<FirebaseVisionImageLabel>>() {
                             @Override
@@ -159,6 +175,20 @@ public class GameImageActivity extends AppCompatActivity implements View.OnClick
                                     String entityId = label.getEntityId();
                                     float confidence = label.getConfidence();
                                     Log.d(TAG, "LabelImage "+text+" AND "+entityId+" AND "+confidence);
+                                    if(text.equals("Cup")){
+                                        Log.d(TAG, "SameImage");
+                                        imageRight.setImageDrawable(getResources().getDrawable(R.drawable.check, getApplicationContext().getTheme()));
+                                        textSentence.setText("사진이 일치합니다. 다른 사용자를 기다립니다.");
+                                        btnTakePicture.setVisibility(View.INVISIBLE);
+                                        dismissProgressDialogue();
+                                        break;
+                                    }else{
+                                        Log.d(TAG, "DifferentImage");
+                                        imageRight.setImageDrawable(getResources().getDrawable(R.drawable.wrong, getApplicationContext().getTheme()));
+                                        textSentence.setText("사진이 일치하지 않습니다.");
+                                        btnTakePicture.setText("다시 찍기");
+                                        dismissProgressDialogue();
+                                    }
                                 }
                             }
                         })
@@ -171,7 +201,18 @@ public class GameImageActivity extends AppCompatActivity implements View.OnClick
             }
         }
     }
-
+    ProgressDialog progressDialog;
+    /**
+     * 파일이 업로드 되는 동안 다이얼로그 창을 띄우고, 없애기 위한 메소드.
+     */
+    public void showProgressDialogue(Activity context, String dialougeText){
+        progressDialog = new ProgressDialog(context);
+        progressDialog.setMessage(dialougeText);
+        progressDialog.show();
+    }
+    public void dismissProgressDialogue(){
+        progressDialog.dismiss();
+    }
     private static Bitmap rotateImage(Bitmap img, int degree) {
         Matrix matrix = new Matrix();
         matrix.postRotate(degree);
