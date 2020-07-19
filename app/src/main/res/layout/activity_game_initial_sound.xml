@@ -71,4 +71,23 @@
             android:text="입력" />
     </LinearLayout>
 
+    <TextView
+        android:id="@+id/textResult"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/secondInitialLetter"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:textColor="#000"
+        android:layout_marginTop="150dp"/>
+    <TextView
+        android:id="@+id/textResultDescription"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/textResult"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="20dp"
+        android:textColor="#000"/>
+
 </androidx.constraintlayout.widget.ConstraintLayout>
