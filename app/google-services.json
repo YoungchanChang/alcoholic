@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "645627810563",
+    "firebase_url": "https://alcoholic-a76f1.firebaseio.com",
+    "project_id": "alcoholic-a76f1",
+    "storage_bucket": "alcoholic-a76f1.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:645627810563:android:19826977a3cd01c2dbcf36",
+        "android_client_info": {
+          "package_name": "com.techtown.alcoholic"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "645627810563-hkavdqietaitljpif02fsecrhp6dmb7o.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.techtown.alcoholic",
+            "certificate_hash": "d338ff57f99d0775ae96f2c78541513476417056"
+          }
+        },
+        {
+          "client_id": "645627810563-8sa9pbgbdhq9gj1ilhj9ae7sk8hvffgh.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBuk_cilg0IgN-e4odDHruHlEdYenqZZVE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "645627810563-8sa9pbgbdhq9gj1ilhj9ae7sk8hvffgh.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
