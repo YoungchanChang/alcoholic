@@ -18,7 +18,7 @@ import java.util.ArrayList;
 
 //싱글톤 소켓통신 스레드
 public class SocketSendThread extends Thread {
-    private String TAG = "데이터 소켓송신 스레드";
+    private static String TAG = "데이터 소켓송신 스레드";
     private final int SERVER_PORT = 5001;
     private static SocketSendThread socketSendThread = null;
     public boolean isConnected = false;
@@ -28,52 +28,50 @@ public class SocketSendThread extends Thread {
     private ArrayList<String> dataList;
 
 
-    public static SocketSendThread getInstance(String url) {
+    public static SocketSendThread getInstance(String url, Socket socket) {
         if(socketSendThread ==null) {
             socketSendThread = new SocketSendThread();
             socketSendThread.url = url;
-            socketSendThread.socket = new Socket();
+            socketSendThread.socket = socket;
             socketSendThread.dataList = new ArrayList<>();
             socketSendThread.start();
         }
-        socketSendThread.isConnected = socketSendThread.connectSocket();
-
         return socketSendThread;
     }
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     public void run() {
         while (true) {
-            if(!isConnected) {
-                isConnected = connectSocket();
-            }else {
-                //연결되어있으면
-                if(dataList.size()!=0) {
-                    pw.println(dataList.remove(0));
-                }
+            isConnected = connectSocket();
+            //연결되어있으면
+            if(dataList.size()!=0) {
+                pw.println(dataList.remove(0));
             }
         }
     }
 
     private boolean connectSocket() {
-        try {
-            if (socket == null || socket.isClosed() || !socket.isConnected()) {
-                Log.i(TAG, "run: 소켓연결 시도");
-                //소켓 연결
-                socket.connect(new InetSocketAddress(url, SERVER_PORT));
-                pw = new PrintWriter(new OutputStreamWriter(socket.getOutputStream(), StandardCharsets.UTF_8), true);
+        synchronized (socket) {
+            try {
+                if (socket == null || socket.isClosed() || !socket.isConnected()) {
+                    Log.i(TAG, "run: 소켓연결 시도");
+                    //소켓 연결
+                    socket.connect(new InetSocketAddress(url, SERVER_PORT));
+                    pw = new PrintWriter(new OutputStreamWriter(socket.getOutputStream(), StandardCharsets.UTF_8), true);
 
-                Log.i(TAG, "run: 소켓연결 되었습니다");
-                return true;
-            } else if (socket.isConnected()) {
-                Log.i(TAG, "run: 소켓 연결되어있음");
-                return true;
+                    Log.i(TAG, "run: 소켓연결 되었습니다");
+                    return true;
+                } else if (socket.isConnected()) {
+                    Log.i(TAG, "run: 소켓 연결되어있음");
+                    pw = new PrintWriter(new OutputStreamWriter(socket.getOutputStream(), StandardCharsets.UTF_8), true);
+                    return true;
+                }
+            } catch (Exception e) {
+                Log.e(TAG, "run: 소켓연결오류", e);
+                return false;
             }
-        } catch (Exception e) {
-            Log.e(TAG, "run: 소켓연결오류", e);
             return false;
         }
-        return false;
     }
 
     public void sendData(String data) {

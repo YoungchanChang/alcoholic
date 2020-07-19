@@ -34,63 +34,62 @@ public class SocketReceiveThread extends Thread{
     private ArrayList<String> dataList = null;
 
 
-    public static SocketReceiveThread getInstance(String url, Handler handler) {
+    public static SocketReceiveThread getInstance(String url, Handler handler, Socket socket) {
         if(socketReceiveThread ==null) {
             socketReceiveThread = new SocketReceiveThread();
             socketReceiveThread.url = url;
             socketReceiveThread.handler = handler;
-            socketReceiveThread.socket = new Socket();
+            socketReceiveThread.socket =socket;
             socketReceiveThread.dataList = new ArrayList<>();
             socketReceiveThread.start();
         }
-        socketReceiveThread.isConnected = socketReceiveThread.connectSocket();
-
         return socketReceiveThread;
     }
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     public void run() {
+        //연결되어있으면
         while (true) {
-            if(!isConnected) {
-                isConnected = connectSocket();
-            }else {
-                //연결되어있으면
-                try {
-                    BufferedReader br = new BufferedReader(new InputStreamReader(socket.getInputStream(), StandardCharsets.UTF_8));
-                    String msg = br.readLine();
-                    Message message = handler.obtainMessage();
-                    Bundle bundle = new Bundle();
-                    bundle.putString("isFrom","receiveMethod");
-                    bundle.putString("value", msg);
-                    message.setData(bundle);
-                    handler.sendMessage(message);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-
+            isConnected = connectSocket();
+            try {
+                BufferedReader br = new BufferedReader(new InputStreamReader(socket.getInputStream(), StandardCharsets.UTF_8));
+                Log.i(TAG, "run: 소켓 메세지 수신 대기");
+                String msg = br.readLine();
+                Log.i(TAG, "run: 소켓 메세지 수신"+msg);
+                Message message = handler.obtainMessage();
+                Bundle bundle = new Bundle();
+                bundle.putString("isFrom","receiveThread");
+                bundle.putString("value", msg);
+                message.setData(bundle);
+                handler.sendMessage(message);
+            } catch (IOException e) {
+                Log.e(TAG, "run: 메세지 수신 오류", e);
+                e.printStackTrace();
             }
         }
     }
 
     private boolean connectSocket() {
-        try {
-            if (socket == null || socket.isClosed() || !socket.isConnected()) {
-                Log.i(TAG, "run: 소켓연결 시도");
-                //소켓 연결
-                socket.connect(new InetSocketAddress(url, SERVER_PORT));
-                pw = new PrintWriter(new OutputStreamWriter(socket.getOutputStream(), StandardCharsets.UTF_8), true);
+        synchronized (socket) {
+            try {
+                if (socket == null || socket.isClosed() || !socket.isConnected()) {
+                    Log.i(TAG, "run: 소켓연결 시도");
+                    //소켓 연결
+                    socket.connect(new InetSocketAddress(url, SERVER_PORT));
+                    pw = new PrintWriter(new OutputStreamWriter(socket.getOutputStream(), StandardCharsets.UTF_8), true);
 
-                Log.i(TAG, "run: 소켓연결 되었습니다");
-                return true;
-            } else if (socket.isConnected()) {
-                Log.i(TAG, "run: 소켓 연결되어있음");
-                return true;
+                    Log.i(TAG, "run: 소켓연결 되었습니다");
+                    return true;
+                } else if (socket.isConnected()) {
+                    Log.i(TAG, "run: 소켓 연결되어있음");
+                    return true;
+                }
+            } catch (Exception e) {
+                Log.e(TAG, "run: 소켓연결오류", e);
+                return false;
             }
-        } catch (Exception e) {
-            Log.e(TAG, "run: 소켓연결오류", e);
             return false;
         }
-        return false;
     }
 
     public void sendData(String data) {

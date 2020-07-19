@@ -17,6 +17,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.techtown.alcoholic.R;
+import com.techtown.alcoholic.SingleToneSocket;
 import com.techtown.alcoholic.SocketReceiveThread;
 import com.techtown.alcoholic.SocketSendThread;
 import com.techtown.alcoholic.TimerThread;
@@ -62,8 +63,8 @@ public class GameShakeItActivity extends AppCompatActivity implements SensorEven
         TimerThread timerThread = new TimerThread(timeLimit,handler);
         timerThread.start();
 
-        socketSendThread = socketSendThread.getInstance(getString(R.string.server_ip));
-        socketReceiveThread = SocketReceiveThread.getInstance(getString(R.string.server_ip),handler);
+        socketSendThread = socketSendThread.getInstance(getString(R.string.server_ip),SingleToneSocket.getInstance());
+        socketReceiveThread = SocketReceiveThread.getInstance(getString(R.string.server_ip),handler, SingleToneSocket.getInstance());
     }
 
     protected void onResume() {

@@ -17,6 +17,7 @@ import android.widget.Toast;
 import com.pedro.library.AutoPermissions;
 import com.pedro.library.AutoPermissionsListener;
 import com.techtown.alcoholic.R;
+import com.techtown.alcoholic.SingleToneSocket;
 import com.techtown.alcoholic.SocketReceiveThread;
 import com.techtown.alcoholic.SocketSendThread;
 
@@ -56,8 +57,8 @@ public class RoomStartActivity extends AppCompatActivity implements AutoPermissi
         AutoPermissions.Companion.loadAllPermissions(this, 101);
 
         handler = getHandler();
-        socketSendThread = socketSendThread.getInstance(getString(R.string.server_ip));
-        socketReceiveThread = SocketReceiveThread.getInstance(getString(R.string.server_ip),handler);
+        socketReceiveThread = SocketReceiveThread.getInstance(getString(R.string.server_ip),handler, SingleToneSocket.getInstance());
+        socketSendThread = socketSendThread.getInstance(getString(R.string.server_ip),SingleToneSocket.getInstance());
 
     }
 
@@ -99,13 +100,13 @@ public class RoomStartActivity extends AppCompatActivity implements AutoPermissi
                 startActivity(intent4);
                 break;
             case R.id.btnMakeRoom:
-                if(!editTextNickname.getText().toString().equals("")&&editTextRoomName.getText().toString().equals("")) {
+                if(!editTextNickname.getText().toString().equals("")&&!editTextRoomName.getText().toString().equals("")) {
                     String request = "makeRoom:"+editTextNickname.getText().toString()+":"+editTextRoomName.getText().toString();
                     socketSendThread.sendData(request);
                 }
                 break;
             case R.id.btnSearchingRoom:
-                if(!editTextNickname.getText().toString().equals("")&&editTextRoomName.getText().toString().equals("")) {
+                if(!editTextNickname.getText().toString().equals("")&&!editTextRoomName.getText().toString().equals("")) {
                     String request = "joinRoom:"+editTextNickname.getText().toString()+":"+editTextRoomName.getText().toString();
                     socketSendThread.sendData(request);
                 }
