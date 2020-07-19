@@ -15,6 +15,7 @@ import android.provider.MediaStore;
 import android.util.Base64;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 
@@ -32,13 +33,14 @@ import java.io.InputStream;
 //3.
 
 
-public class GameImageActivity extends AppCompatActivity {
+public class GameImageActivity extends AppCompatActivity implements View.OnClickListener{
     private static final String TAG = "GameLog";
     public static final int CAMERA_PERMISSIONS_REQUEST = 2;
     public static final int CAMERA_IMAGE_REQUEST = 3;
 
 
     ImageView imageMyPic;
+    Button btnTakePicture;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,7 +55,11 @@ public class GameImageActivity extends AppCompatActivity {
         //FirebaseVisionImage image = FirebaseVisionImage.fromBitmap(bitmap);
         //startCamera();
         imageMyPic = findViewById(R.id.pictureView);
+        btnTakePicture = findViewById(R.id.btnTakePicture);
+        btnTakePicture.setOnClickListener(this);
     }
+
+
     File camera_file;
     public static final String FILE_NAME = "profile.jpg";
     public File getCameraFile() {
@@ -71,7 +77,7 @@ public class GameImageActivity extends AppCompatActivity {
             if (camera_file == null) {
                 camera_file = getCameraFile();
             }
-            Uri photoUri = FileProvider.getUriForFile(this, "org.techtown.english.fileprovider", camera_file);
+            Uri photoUri = FileProvider.getUriForFile(this, "org.techtown.alcoholic.fileprovider", camera_file);
 
             intent.putExtra(MediaStore.EXTRA_OUTPUT, photoUri);
             intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION|Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
@@ -105,4 +111,16 @@ public class GameImageActivity extends AppCompatActivity {
         encodedImage = Base64.encodeToString(byteArray, Base64.DEFAULT);
         Log.d(TAG, "onActivityResult: CAMERA 이미지 String 확인 :" + encodedImage);
     }
+
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()){
+            case R.id.btnTakePicture:
+                    startCamera();
+                break;
+
+        }
+    }
+
 }
