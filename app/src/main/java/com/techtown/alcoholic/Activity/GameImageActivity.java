@@ -1,5 +1,6 @@
 package com.techtown.alcoholic.Activity;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.FileProvider;
@@ -9,8 +10,11 @@ import android.content.ContentResolver;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
+import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Base64;
 import android.util.Log;
@@ -18,14 +22,25 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.ml.vision.FirebaseVision;
 import com.google.firebase.ml.vision.cloud.FirebaseVisionCloudDetectorOptions;
+
 import com.google.firebase.ml.vision.common.FirebaseVisionImage;
+import com.google.firebase.ml.vision.label.FirebaseVisionImageLabeler;
+import com.pedro.library.AutoPermissions;
+import com.pedro.library.AutoPermissionsListener;
 import com.techtown.alcoholic.R;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.IOException;
 import java.io.InputStream;
+import java.util.List;
 
 
 //1. 사진찍고 돌아오면 내 화면에 보이기
@@ -33,7 +48,7 @@ import java.io.InputStream;
 //3.
 
 
-public class GameImageActivity extends AppCompatActivity implements View.OnClickListener{
+public class GameImageActivity extends AppCompatActivity implements View.OnClickListener, AutoPermissionsListener {
     private static final String TAG = "GameLog";
     public static final int CAMERA_PERMISSIONS_REQUEST = 2;
     public static final int CAMERA_IMAGE_REQUEST = 3;
@@ -41,10 +56,12 @@ public class GameImageActivity extends AppCompatActivity implements View.OnClick
 
     ImageView imageMyPic;
     Button btnTakePicture;
+    File file;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game_image);
+        AutoPermissions.Companion.loadAllPermissions(this, 101);
 
         FirebaseVisionCloudDetectorOptions options =
                 new FirebaseVisionCloudDetectorOptions.Builder()
@@ -60,72 +77,113 @@ public class GameImageActivity extends AppCompatActivity implements View.OnClick
     }
 
 
-    File camera_file;
+
     public static final String FILE_NAME = "profile.jpg";
 
-    public void startCamera() {
 
+    public void takePicture() {
+        if (file == null) {
+            file = createFile();
+        }
 
-            //카메라는 파일이 저장될 위치를 명시하고, fileProvider에 authority를 명시해야한다.
-            // 1. Manifest의 authority확인 2. Manifest안에 Provider에 존재하는 meta-data확인
-            // 3. meta-data의 저장경로 확인(cache에 저장할것인지 EXTERNAL에 저장할 것인지)
-            // file객체의 이름은 서버에서 처리할 것이기 때문에 똑같이 처리해도 된다.
-
-            if (camera_file == null) {
-                camera_file = getCameraFile();
-            }
-            Uri photoUri = FileProvider.getUriForFile(this, "org.techtown.alcoholic.fileprovider", camera_file);
-
-            Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-            intent.putExtra(MediaStore.EXTRA_OUTPUT, photoUri);
-            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION|Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
-            startActivityForResult(intent, CAMERA_IMAGE_REQUEST);
-
+        Uri fileUri = FileProvider.getUriForFile(this,"org.techtown.alcoholic.fileprovider", file);
+        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION|Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+        intent.putExtra(MediaStore.EXTRA_OUTPUT, fileUri);
+        if (intent.resolveActivity(getPackageManager()) != null) {
+            startActivityForResult(intent, 101);
+        }
     }
-    public File getCameraFile() {
-        File storageDir = getApplicationContext().getFilesDir();
-        return new File(storageDir, FILE_NAME);
+
+    private File createFile() {
+        String filename = "capture.jpg";
+        File storageDir = Environment.getExternalStorageDirectory();
+        File outFile = new File(storageDir, filename);
+
+        return outFile;
     }
-    Bitmap bitmapPicture;
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        Log.d(TAG, "getLog" + requestCode);
-        Log.d(TAG, "getLog2" + resultCode);
-        Log.d(TAG, "getLog3" + data);
-         if (requestCode == CAMERA_IMAGE_REQUEST && resultCode == RESULT_OK && data != null) {
 
-            //사진 이미지가 커서 업로드 되지 않는다면 주석처리한 코드로 설정
-//            BitmapFactory.Options options = new BitmapFactory.Options();
-//            options.inSampleSize = 8;
-//            Bitmap bitmap = BitmapFactory.decodeFile(camera_file.getAbsolutePath(), options);
+        if (requestCode == 101 && resultCode == RESULT_OK) {
+            BitmapFactory.Options options = new BitmapFactory.Options();
+            options.inSampleSize = 8;
+            Bitmap bitmap = BitmapFactory.decodeFile(file.getAbsolutePath());
 
-            bitmapPicture = BitmapFactory.decodeFile(camera_file.getAbsolutePath());
-            Log.d(TAG, "onActivityResult:"+bitmapPicture);
-            imageMyPic.setImageBitmap(bitmapPicture);
-            //sendStringImg(bitmapPicture);
+            if (bitmap != null) {
+                ExifInterface ei = null;
+                try {
+                    ei = new ExifInterface(file.getAbsolutePath());
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                int orientation = ei.getAttributeInt(ExifInterface.TAG_ORIENTATION,
+                        ExifInterface.ORIENTATION_UNDEFINED);
+                Bitmap rotatedBitmap = null;
+                switch (orientation) {
 
+                    case ExifInterface.ORIENTATION_ROTATE_90:
+                        rotatedBitmap = rotateImage(bitmap, 90);
+                        break;
+
+                    case ExifInterface.ORIENTATION_ROTATE_180:
+                        rotatedBitmap = rotateImage(bitmap, 180);
+                        break;
+
+                    case ExifInterface.ORIENTATION_ROTATE_270:
+                        rotatedBitmap = rotateImage(bitmap, 270);
+                        break;
+
+                    case ExifInterface.ORIENTATION_NORMAL:
+                    default:
+                        rotatedBitmap = bitmap;
+                }
+                imageMyPic.setImageBitmap(rotatedBitmap);
+
+
+                Log.d(TAG, "BeforeFirebase");
+
+                FirebaseVisionImage image = FirebaseVisionImage.fromBitmap(rotatedBitmap);
+                FirebaseVisionImageLabeler labeler = FirebaseVision.getInstance()
+                        .getCloudImageLabeler();
+
+            }
         }
-
-    }
-    String encodedImage;
-    public void sendStringImg(Bitmap bitmapPicture){
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        bitmapPicture.compress(Bitmap.CompressFormat.JPEG, 100, baos);
-        byte[] byteArray = baos.toByteArray();
-        encodedImage = Base64.encodeToString(byteArray, Base64.DEFAULT);
-        Log.d(TAG, "onActivityResult: CAMERA 이미지 String 확인 :" + encodedImage);
     }
 
-
+    private static Bitmap rotateImage(Bitmap img, int degree) {
+        Matrix matrix = new Matrix();
+        matrix.postRotate(degree);
+        Bitmap rotatedImg = Bitmap.createBitmap(img, 0, 0, img.getWidth(), img.getHeight(), matrix, true);
+        img.recycle();
+        return rotatedImg;
+    }
     @Override
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.btnTakePicture:
-                    startCamera();
+                    takePicture();
                 break;
 
         }
     }
 
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String permissions[],
+                                           int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        //AutoPermissions.Companion.parsePermissions(this, requestCode, permissions, this);
+    }
+
+    @Override
+    public void onDenied(int requestCode, String[] permissions) {
+        //Toast.makeText(this, "permissions denied : " + permissions.length, Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void onGranted(int requestCode, String[] permissions) {
+        //Toast.makeText(this, "permissions granted : " + permissions.length, Toast.LENGTH_LONG).show();
+    }
 }
