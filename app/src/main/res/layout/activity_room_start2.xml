@@ -6,4 +6,48 @@
     android:layout_height="match_parent"
     tools:context=".Activity.RoomStart2Activity">
 
+    <ImageView
+        android:id="@+id/image_gif"
+        android:layout_width="@dimen/auto_fix"
+        android:layout_height="@dimen/auto_fix"
+        android:layout_marginTop="200dp"
+        app:layout_constraintBottom_toTopOf="@+id/topPanel"
+        app:layout_constraintEnd_toStartOf="@+id/guideline3"
+        app:layout_constraintStart_toStartOf="@+id/guideline2"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.2" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.8" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/topPanel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.7" />
+
+    <ImageButton
+        android:id="@+id/imageButton2"
+        android:layout_width="79dp"
+        android:layout_height="82dp"
+        android:layout_marginTop="36dp"
+        android:background="#FFFFFF"
+        android:scaleType="fitXY"
+        app:layout_constraintEnd_toStartOf="@+id/guideline3"
+        app:layout_constraintHorizontal_bias="0.064"
+        app:layout_constraintStart_toStartOf="@+id/guideline2"
+        app:layout_constraintTop_toTopOf="@+id/topPanel"
+        app:srcCompat="@drawable/icon" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
