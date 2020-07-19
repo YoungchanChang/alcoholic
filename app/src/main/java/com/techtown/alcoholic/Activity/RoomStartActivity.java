@@ -83,8 +83,8 @@ public class RoomStartActivity extends AppCompatActivity implements AutoPermissi
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.btnShakeIt:
-                Intent intent = new Intent(RoomStartActivity.this,GameShakeItActivity.class);
-                startActivity(intent);
+                String requestShakeIt = "gameStart:"+editTextRoomName.getText().toString()+":"+"shakeIt";
+                socketSendThread.sendData(requestShakeIt);
                 break;
             case R.id.btnImageGame:
                 Intent intent2 = new Intent(RoomStartActivity.this,GameImageActivity.class);
@@ -131,6 +131,15 @@ public class RoomStartActivity extends AppCompatActivity implements AutoPermissi
                         String value = data.getString("value");
 //                        new JSONArray(value)
                         Toast.makeText(RoomStartActivity.this,value,Toast.LENGTH_SHORT).show();
+                        String[] tokens = value.split(":");
+                        if("gameStart".equals(tokens[0])) {
+                            switch(tokens[1]){
+                                case "shakeIt" :
+                                    Intent intent = new Intent(RoomStartActivity.this,GameShakeItActivity.class);
+                                    startActivity(intent);
+                                    break;
+                            }
+                        }
                         break;
                     default:
                         Log.i(TAG, "handleMessage: 아무것도 클릭되지 않음");
