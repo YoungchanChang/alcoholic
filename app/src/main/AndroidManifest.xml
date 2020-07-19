@@ -13,21 +13,29 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme"
+        android:hardwareAccelerated="true">
+
+        <activity android:name=".Activity.RoomActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
         <activity android:name=".Activity.RoomSearchingActivity">
 
         </activity>
-        <activity android:name=".Activity.RoomActivity" />
-        <activity android:name=".Activity.RoomStartActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
-        <activity android:name=".MainActivity">
 
-        </activity>
+        <activity android:name=".Activity.RoomStartActivity" />
+        <activity android:name=".MainActivity"/>
+
+
     </application>
 
 </manifest>
