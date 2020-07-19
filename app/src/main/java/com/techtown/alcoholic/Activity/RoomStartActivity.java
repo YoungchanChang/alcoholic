@@ -26,7 +26,7 @@ public class RoomStartActivity extends AppCompatActivity implements AutoPermissi
     Button btnShakeIt;
     Button btnImageGame,btnInitialSound,btnYoutube;
     //방만들기, 방찾기 버튼
-    Button btnMakeRoom;
+    Button btnMakeRoom, basicFirst;
     Button btnSearchingRoom;
     EditText editTextNickname;
     EditText editTextRoomName;
@@ -54,6 +54,9 @@ public class RoomStartActivity extends AppCompatActivity implements AutoPermissi
         btnSearchingRoom.setOnClickListener(this);
         editTextNickname = findViewById(R.id.editTextNickname);
         editTextRoomName = findViewById(R.id.editTextRoomName);
+
+        basicFirst= findViewById(R.id.btnSearchingRoom);
+        basicFirst.setOnClickListener(this);
         AutoPermissions.Companion.loadAllPermissions(this, 101);
 
         handler = getHandler();
@@ -99,6 +102,11 @@ public class RoomStartActivity extends AppCompatActivity implements AutoPermissi
                 Intent intent4 = new Intent(RoomStartActivity.this,GameYoutubeViewsActivity.class);
                 startActivity(intent4);
                 break;
+            case R.id.basicFirst:
+                Intent intent7 = new Intent(RoomStartActivity.this,RoomStart2Activity.class);
+                startActivity(intent7);
+                break;
+
             case R.id.btnMakeRoom:
                 if(!editTextNickname.getText().toString().equals("")&&!editTextRoomName.getText().toString().equals("")) {
                     String request = "makeRoom:"+editTextNickname.getText().toString()+":"+editTextRoomName.getText().toString();
