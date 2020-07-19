@@ -9,7 +9,7 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
         android:allowBackup="true"
@@ -19,10 +19,11 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Activity.GameInitialSound"></activity>
+        <activity android:name=".Activity.GameYoutubeViewsActivity"></activity>
+        <activity android:name=".Activity.GameInitialSound" />
         <activity android:name=".Activity.GameImageActivity" />
         <activity android:name=".Activity.RoomActivity" />
-        <activity android:name=".Activity.RoomSearchingActivity"></activity>
+        <activity android:name=".Activity.RoomSearchingActivity" />
         <activity android:name=".Activity.RoomStartActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
