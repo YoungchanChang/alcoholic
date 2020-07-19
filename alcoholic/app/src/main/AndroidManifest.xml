@@ -16,9 +16,8 @@
         android:theme="@style/AppTheme"
         android:hardwareAccelerated="true">
         android:theme="@style/AppTheme">
-        <activity android:name=".Activity.RoomActivity" />
 
-        <activity android:name=".Activity.RoomSearchingActivity">
+        <activity android:name=".Activity.RoomActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -28,10 +27,15 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-        <activity android:name=".Activity.RoomStartActivity" />
-        <activity android:name=".MainActivity">
+
+        <activity android:name=".Activity.RoomSearchingActivity">
 
         </activity>
+
+
+        <activity android:name=".Activity.RoomStartActivity" />
+        <activity android:name=".MainActivity"/>
+
 
     </application>
 
