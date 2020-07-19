@@ -6,4 +6,13 @@
     android:layout_height="match_parent"
     tools:context=".Activity.GameImageActivity">
 
+    <ImageView
+        android:id="@+id/pictureView"
+        android:layout_width="194dp"
+        android:layout_height="168dp"
+        android:layout_marginStart="92dp"
+        android:layout_marginTop="284dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_launcher_background" />
 </androidx.constraintlayout.widget.ConstraintLayout>
