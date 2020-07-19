@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "162056283521",
+    "firebase_url": "https://scatch-e44ae.firebaseio.com",
+    "project_id": "scatch-e44ae",
+    "storage_bucket": "scatch-e44ae.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:162056283521:android:d4b56f5c96a54bdc41f480",
+        "android_client_info": {
+          "package_name": "com.techtown.alcoholic"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "162056283521-6a5auah2us8ru1140kmpredspe7n6o6i.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCoe-qLgLv1jXjBHUEDEeHOgiz1vttxhhM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "162056283521-5gep3qkt7o6uakfhpe25salrvmenk1kd.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
