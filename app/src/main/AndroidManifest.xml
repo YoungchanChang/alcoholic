@@ -13,6 +13,9 @@
         <activity android:name=".Activity.GameImageActivity"></activity>
         <activity android:name=".Activity.RoomActivity"></activity>
         <activity android:name=".Activity.RoomSearchingActivity">
+
+        </activity>
+        <activity android:name=".Activity.RoomStartActivity" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -24,8 +27,8 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-        <activity android:name=".Activity.RoomStartActivity" />
         <activity android:name=".MainActivity" />
+        <activity android:name=".Activity.GameShakeItActivity"></activity>
     </application>
     <uses-feature android:name="android.hardware.camera" />
 
