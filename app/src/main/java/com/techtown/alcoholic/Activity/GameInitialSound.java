@@ -173,7 +173,6 @@ public class GameInitialSound extends AppCompatActivity {
 
                 eventType = xpp.next();
 
-
             }
 
         } catch (Exception e) {
