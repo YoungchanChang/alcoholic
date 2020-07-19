@@ -43,13 +43,5 @@
         app:layout_constraintStart_toEndOf="@+id/btn_RoomInfoFragment"
         app:layout_constraintTop_toTopOf="@id/bottom_panel" />
 
-    <ImageView
-        android:id="@+id/qrCode"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_launcher_background" />
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>

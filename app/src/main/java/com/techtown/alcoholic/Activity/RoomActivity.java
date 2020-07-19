@@ -83,7 +83,7 @@ public class RoomActivity extends AppCompatActivity {
 
     public void QRFunction(){
 
-        imageViewQRCode = (ImageView)findViewById(R.id.qrCode);
+        imageViewQRCode = (ImageView)findViewById(R.id.QRCode);
 
 
         textForQRCode = "테스트";
