@@ -26,6 +26,7 @@ import com.techtown.alcoholic.R;
 
 import java.util.Hashtable;
 
+//hihihhihihihihih
 public class RoomActivity extends AppCompatActivity {
     private String TAG = "RoomLog";
 
