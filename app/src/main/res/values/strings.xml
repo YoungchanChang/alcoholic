@@ -3,6 +3,7 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="server_ip">3.128.160.203</string>
 
     <string name="roomInfo">방 정보</string>
 
