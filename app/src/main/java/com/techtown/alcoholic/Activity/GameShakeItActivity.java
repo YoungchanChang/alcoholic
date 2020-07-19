@@ -11,11 +11,14 @@ import android.os.Message;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.techtown.alcoholic.R;
+import com.techtown.alcoholic.SocketReceiveThread;
+import com.techtown.alcoholic.SocketSendThread;
 import com.techtown.alcoholic.TimerThread;
 
 public class GameShakeItActivity extends AppCompatActivity implements SensorEventListener, View.OnClickListener {
@@ -31,9 +34,15 @@ public class GameShakeItActivity extends AppCompatActivity implements SensorEven
     int timeLimit = 15;
     boolean isOver = false;
 
+    String userNick = "팀원이유빈";
+    String roomKey = "방장이유빈";
+
     SensorManager mSensorManager;
     Sensor mAccelerometer;
     Handler handler;
+
+    SocketReceiveThread socketReceiveThread;
+    SocketSendThread socketSendThread;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +59,9 @@ public class GameShakeItActivity extends AppCompatActivity implements SensorEven
         handler = getHandler();
         TimerThread timerThread = new TimerThread(timeLimit,handler);
         timerThread.start();
+
+        socketSendThread = socketSendThread.getInstance(getString(R.string.server_ip));
+        socketReceiveThread = SocketReceiveThread.getInstance(getString(R.string.server_ip),handler);
     }
 
     protected void onResume() {
@@ -108,13 +120,27 @@ public class GameShakeItActivity extends AppCompatActivity implements SensorEven
                 super.handleMessage(msg);
                 Bundle data = msg.getData();
                 Log.i(TAG, "handleMessage: 데이테 전달받음"+data.toString());
-                if("timerThread".equals(data.getString("isFrom"))) {
-                    if(data.getInt("second")==0) {
-                        textTimeLeft.setText("종료되었습니다");
-                        mSensorManager.unregisterListener(GameShakeItActivity.this);
-                    }else {
-                        textTimeLeft.setText(data.getInt("second")+"초 남았습니다");
-                    }
+                switch (data.getString("isFrom")) {
+                    case "timerThread":
+                        //타이머스레드에서 데이터 받을 때
+                        if(data.getInt("second")==0) {
+                            textTimeLeft.setText("종료되었습니다");
+                            mSensorManager.unregisterListener(GameShakeItActivity.this);
+                            //게임결과 전송
+                            String request = "game:shakeIt:"+userNick+":"+count;
+                            socketSendThread.sendData(request);
+                        }else {
+                            textTimeLeft.setText(data.getInt("second")+"초 남았습니다");
+                        }
+                        break;
+                    case "receiveThread":
+                        //소켓수신 스레드에서 데이터 받을 때
+                        String value = data.getString("value");
+                        Toast.makeText(GameShakeItActivity.this,value,Toast.LENGTH_SHORT).show();
+                        break;
+                    default:
+                        Log.i(TAG, "handleMessage: 아무것도 클릭되지 않음");
+                        break;
                 }
             }
         };
