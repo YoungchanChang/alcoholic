@@ -1,23 +1,39 @@
 package com.techtown.alcoholic.Activity;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import com.pedro.library.AutoPermissions;
 import com.pedro.library.AutoPermissionsListener;
 import com.techtown.alcoholic.R;
+import com.techtown.alcoholic.SocketReceiveThread;
+import com.techtown.alcoholic.SocketSendThread;
 
 public class RoomStartActivity extends AppCompatActivity implements AutoPermissionsListener, View.OnClickListener {
     private static final String TAG = "GameLog";
     Button btnShakeIt;
     Button btnImageGame,btnInitialSound,btnYoutube;
+    //방만들기, 방찾기 버튼
+    Button btnMakeRoom;
+    Button btnSearchingRoom;
+    EditText editTextNickname;
+    EditText editTextRoomName;
 
+    SocketSendThread socketSendThread;
+    SocketReceiveThread socketReceiveThread;
+
+    Handler handler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,25 +47,36 @@ public class RoomStartActivity extends AppCompatActivity implements AutoPermissi
         btnInitialSound.setOnClickListener(this);
         btnYoutube= findViewById(R.id.btnYoutubeViews);
         btnYoutube.setOnClickListener(this);
+        btnMakeRoom = findViewById(R.id.btnMakeRoom);
+        btnMakeRoom.setOnClickListener(this);
+        btnSearchingRoom = findViewById(R.id.btnSearchingRoom);
+        btnSearchingRoom.setOnClickListener(this);
+        editTextNickname = findViewById(R.id.editTextNickname);
+        editTextRoomName = findViewById(R.id.editTextRoomName);
         AutoPermissions.Companion.loadAllPermissions(this, 101);
+
+        handler = getHandler();
+        socketSendThread = socketSendThread.getInstance(getString(R.string.server_ip));
+        socketReceiveThread = SocketReceiveThread.getInstance(getString(R.string.server_ip),handler);
+
     }
 
-@Override
-public void onRequestPermissionsResult(int requestCode, String permissions[],
-        int[] grantResults) {
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String permissions[],
+            int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         AutoPermissions.Companion.parsePermissions(this, requestCode, permissions, this);
-        }
+    }
 
-@Override
-public void onDenied(int requestCode, String[] permissions) {
+    @Override
+    public void onDenied(int requestCode, String[] permissions) {
         //Toast.makeText(this, "permissions denied : " + permissions.length, Toast.LENGTH_LONG).show();
-        }
+    }
 
-@Override
-public void onGranted(int requestCode, String[] permissions) {
+    @Override
+    public void onGranted(int requestCode, String[] permissions) {
         //Toast.makeText(this, "permissions granted : " + permissions.length, Toast.LENGTH_LONG).show();
-        }
+    }
 
     @Override
     public void onClick(View v) {
@@ -71,8 +98,45 @@ public void onGranted(int requestCode, String[] permissions) {
                 Intent intent4 = new Intent(RoomStartActivity.this,GameYoutubeViewsActivity.class);
                 startActivity(intent4);
                 break;
+            case R.id.btnMakeRoom:
+                if(!editTextNickname.getText().toString().equals("")&&editTextRoomName.getText().toString().equals("")) {
+                    String request = "makeRoom:"+editTextNickname.getText().toString()+":"+editTextRoomName.getText().toString();
+                    socketSendThread.sendData(request);
+                }
+                break;
+            case R.id.btnSearchingRoom:
+                if(!editTextNickname.getText().toString().equals("")&&editTextRoomName.getText().toString().equals("")) {
+                    String request = "joinRoom:"+editTextNickname.getText().toString()+":"+editTextRoomName.getText().toString();
+                    socketSendThread.sendData(request);
+                }
+                break;
             default:
                 Log.d(TAG, "defaultTest");
         }
     }
+
+    @SuppressLint("HandlerLeak")
+    private Handler getHandler() {
+        return new Handler(){
+            @SuppressLint("SetTextI18n")
+            @Override
+            public void handleMessage(@NonNull Message msg) {
+                super.handleMessage(msg);
+                Bundle data = msg.getData();
+                Log.i(TAG, "handleMessage: 데이테 전달받음"+data.toString());
+                switch (data.getString("isFrom")) {
+                    case "receiveThread":
+                        //소켓수신 스레드에서 데이터 받을 때
+                        String value = data.getString("value");
+//                        new JSONArray(value)
+                        Toast.makeText(RoomStartActivity.this,value,Toast.LENGTH_SHORT).show();
+                        break;
+                    default:
+                        Log.i(TAG, "handleMessage: 아무것도 클릭되지 않음");
+                        break;
+                }
+            }
+        };
+    }
+
 }

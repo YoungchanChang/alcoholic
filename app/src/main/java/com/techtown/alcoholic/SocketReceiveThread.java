@@ -23,7 +23,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 
 public class SocketReceiveThread extends Thread{
-    private String TAG = "데이터 소켓송신 스레드";
+    private String TAG = "데이터 소켓수신 스레드";
     private final int SERVER_PORT = 5001;
     private static SocketReceiveThread socketReceiveThread = null;
     public boolean isConnected = false;
@@ -39,9 +39,9 @@ public class SocketReceiveThread extends Thread{
             socketReceiveThread = new SocketReceiveThread();
             socketReceiveThread.url = url;
             socketReceiveThread.handler = handler;
-            socketReceiveThread.start();
             socketReceiveThread.socket = new Socket();
             socketReceiveThread.dataList = new ArrayList<>();
+            socketReceiveThread.start();
         }
         socketReceiveThread.isConnected = socketReceiveThread.connectSocket();
 

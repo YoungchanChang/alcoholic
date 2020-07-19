@@ -21,6 +21,8 @@ import com.techtown.alcoholic.SocketReceiveThread;
 import com.techtown.alcoholic.SocketSendThread;
 import com.techtown.alcoholic.TimerThread;
 
+import org.json.JSONArray;
+
 public class GameShakeItActivity extends AppCompatActivity implements SensorEventListener, View.OnClickListener {
     private static final String TAG = "쉐킷쉐킷";
     private static final int SHAKE_SKIP_TIME =500;
@@ -136,6 +138,7 @@ public class GameShakeItActivity extends AppCompatActivity implements SensorEven
                     case "receiveThread":
                         //소켓수신 스레드에서 데이터 받을 때
                         String value = data.getString("value");
+//                        new JSONArray(value)
                         Toast.makeText(GameShakeItActivity.this,value,Toast.LENGTH_SHORT).show();
                         break;
                     default:

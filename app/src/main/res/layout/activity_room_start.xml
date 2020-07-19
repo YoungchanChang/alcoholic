@@ -39,6 +39,42 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"/>
 
+    <Button
+        android:id="@+id/btnMakeRoom"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="방만들기"
+        app:layout_constraintBottom_toTopOf="@+id/btnShakeIt"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/btnSearchingRoom"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="방찾기"
+        app:layout_constraintStart_toEndOf="@+id/btnMakeRoom"
+        app:layout_constraintTop_toTopOf="@+id/btnMakeRoom" />
+
+    <EditText
+        android:id="@+id/editTextNickname"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:text="닉네임"
+        app:layout_constraintBottom_toTopOf="@+id/editTextRoomName"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <EditText
+        android:id="@+id/editTextRoomName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:text="방이름"
+        app:layout_constraintBottom_toTopOf="@+id/btnMakeRoom"
+        app:layout_constraintStart_toStartOf="parent" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
 
 

@@ -32,9 +32,9 @@ public class SocketSendThread extends Thread {
         if(socketSendThread ==null) {
             socketSendThread = new SocketSendThread();
             socketSendThread.url = url;
-            socketSendThread.start();
             socketSendThread.socket = new Socket();
             socketSendThread.dataList = new ArrayList<>();
+            socketSendThread.start();
         }
         socketSendThread.isConnected = socketSendThread.connectSocket();
 
