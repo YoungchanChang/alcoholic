@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/backgroundColor"
     tools:context=".Fragment.RoomInfoFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -32,18 +33,90 @@
             app:layout_constraintGuide_percent="0.9" />
 
         <LinearLayout
+            android:id="@+id/LinearLayoutRoomInfo"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             app:layout_constraintTop_toTopOf="@id/topPanel"
             app:layout_constraintStart_toStartOf="@id/startPanel"
             app:layout_constraintEnd_toEndOf="@id/endPanel"
+            android:background="#fff"
             android:orientation="vertical">
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
                 android:text="@string/roomInfo"
+                android:background="@color/alcoholColor"
+                android:textColor="#fff"
+                android:textStyle="bold"
                 android:gravity="center" />
+            <ImageView
+                android:id="@+id/QRCode"
+                android:background="#000"
+                android:layout_width="150dp"
+                android:layout_height="150dp"/>
         </LinearLayout>
+
+
+        <LinearLayout
+            android:id="@+id/linearLayout"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:background="#fff"
+            android:layout_marginTop="20dp"
+            android:orientation="vertical"
+            android:layout_marginBottom="30dp"
+            app:layout_constraintEnd_toEndOf="@id/endPanel"
+            app:layout_constraintStart_toStartOf="@id/startPanel"
+            app:layout_constraintTop_toBottomOf="@id/LinearLayoutRoomInfo">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:orientation="horizontal"
+                android:gravity="center"
+                android:background="@color/alcoholColor">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:text="플레이어 "
+                    android:textColor="#fff"
+                    android:textStyle="bold" />
+                <TextView
+                    android:id="@+id/userNumber"
+                    android:layout_width="wrap_content"
+                    android:layout_height="30dp"
+                    android:gravity="top"
+                    android:textColor="#f57f17"
+                    android:textStyle="bold"
+                    android:textSize="20sp"
+                    android:layout_marginStart="2dp"
+                    android:text="0"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:text=" 명"
+                    android:textColor="#fff"
+                    android:textStyle="bold" />
+
+            </LinearLayout>
+            <androidx.appcompat.app.AlertController.RecycleListView
+                android:id="@+id/recycleViewPlayerList"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:paddingStart="20dp"
+                android:paddingEnd="20dp"
+                android:paddingTop="5dp"/>
+
+
+
+
+        </LinearLayout>
+
+
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 
