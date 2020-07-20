@@ -113,7 +113,7 @@ public class RoomSearchingActivity extends AppCompatActivity {
 
 
                     //barcodeContents의 String값은 방장 이름 값으로 서버에 보내면 된다.
-
+                    String userName = pref.getString("userName", "");
 
 
 

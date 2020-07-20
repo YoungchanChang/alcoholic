@@ -54,9 +54,7 @@ public class RoomStart2Activity extends AppCompatActivity implements View.OnClic
                 ad.show();
                 break;
             case R.id.imageFindRoom:
-                Intent goHome = new Intent(getApplicationContext(), RoomSearchingActivity.class);
-                //user_id를 전달하면 메인홈에서 바로 SELECT문으로 회원정보 가져올 것이다.
-                startActivity(goHome);
+                showDialogueFindRoom();
 
 
                 break;
@@ -102,6 +100,52 @@ public class RoomStart2Activity extends AppCompatActivity implements View.OnClic
                 finish();
                 dialog.dismiss();     //닫기
 
+
+
+
+            }
+        });
+    }
+
+
+    public void showDialogueFindRoom(){
+        ad = new AlertDialog.Builder(RoomStart2Activity.this);
+        ad.setTitle("방장 닉네임 설정");       // 제목 설정
+        ad.setMessage("방장의 닉네임을 설정해 주세요.");   // 내용 설정
+
+        final EditText et = new EditText(RoomStart2Activity.this);
+        ad.setView(et);
+
+
+        ad.setPositiveButton("취소", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+
+                dialog.dismiss();
+
+            }
+        });
+
+        ad.setNegativeButton("확인", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+                String value = et.getText().toString();
+
+                //로그인 성공시에 유저 info 저장시에 쓰일 SharedPref
+                SharedPreferences pref = getSharedPreferences("USER_INFO", Activity.MODE_PRIVATE);;
+                SharedPreferences.Editor editor = pref.edit();
+                editor.putString("userName", value);
+                editor.commit();
+
+                //value값이 captain
+
+                Intent goHome = new Intent(getApplicationContext(), RoomSearchingActivity.class);
+                //user_id를 전달하면 메인홈에서 바로 SELECT문으로 회원정보 가져올 것이다.
+                startActivity(goHome);
+
+                dialog.dismiss();     //닫기
 
 
 
