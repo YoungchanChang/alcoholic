@@ -52,28 +52,32 @@ public class RoomGameList2Activity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), GameReadyActivity.class);
                 intent.putExtra("gameGenre",1);
+                startActivity(intent);
             }
         });
 
         gameYoutube.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), GameReadyActivity.class);
-                intent.putExtra("gameGenre",2);
+                Intent intent2 = new Intent(getApplicationContext(), GameReadyActivity.class);
+                intent2.putExtra("gameGenre",2);
+                startActivity(intent2);
             }
         });
         gameTenor.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), GameReadyActivity.class);
-                intent.putExtra("gameGenre",3);
+                Intent intent3 = new Intent(getApplicationContext(), GameReadyActivity.class);
+                intent3.putExtra("gameGenre",3);
+                startActivity(intent3);
             }
         });
         gameShakeIt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), GameReadyActivity.class);
-                intent.putExtra("gameGenre",4);
+                Intent intent4 = new Intent(getApplicationContext(), GameReadyActivity.class);
+                intent4.putExtra("gameGenre",4);
+                startActivity(intent4);
             }
         });
 

@@ -95,7 +95,11 @@ public class RoomStart2Activity extends AppCompatActivity implements View.OnClic
                     case "receiveThread":
                         //소켓수신 스레드에서 데이터 받을 때
                         String value = data.getString("value");
-                        Toast.makeText(RoomStart2Activity.this,value,Toast.LENGTH_SHORT).show();
+
+
+                        Log.d(TAG, "handleMessage!!!!!!!!!!!!!");
+
+
                         if("makeRoom".equals(value)) {
                             //방 생성완료 시에
                             Intent intent = new Intent(RoomStart2Activity.this,RoomActivity.class);

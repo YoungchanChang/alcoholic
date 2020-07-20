@@ -163,7 +163,7 @@ public class RoomSearchingActivity extends AppCompatActivity {
                     case "receiveThread":
                         //소켓수신 스레드에서 데이터 받을 때
                         String value = data.getString("value");
-                        Toast.makeText(RoomSearchingActivity.this,value,Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(RoomSearchingActivity.this,value,Toast.LENGTH_SHORT).show(); Toast.makeText(RoomSearchingActivity.this,value,Toast.LENGTH_SHORT).show();
                         String[] tokens = value.split(":");
                         if("joinRoom".equals(tokens[0])&&userName.equals(tokens[1])) {
                             //방 생성완료 시에

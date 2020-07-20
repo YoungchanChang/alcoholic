@@ -26,7 +26,7 @@
         android:id="@+id/btnStart"
         android:layout_width="199dp"
         android:layout_height="68dp"
-        android:layout_marginTop="448dp"
+        android:layout_marginTop="396dp"
         android:background="#020202"
         android:text="시작하기"
         android:textColor="#FFFFFF"
@@ -62,9 +62,9 @@
 
     <TextView
         android:id="@+id/textExplain"
-        android:layout_width="295dp"
-        android:layout_height="158dp"
-        android:layout_marginTop="260dp"
+        android:layout_width="351dp"
+        android:layout_height="147dp"
+        android:layout_marginTop="236dp"
         android:text="제시된 초성으로 단어를 빨리 찾아서 입력하세요. 가장 빨리 사전에 등록된 단어를 맞춘 플레이어가 승리합니다."
         android:textColor="#FFFFFF"
         android:textSize="24sp"
