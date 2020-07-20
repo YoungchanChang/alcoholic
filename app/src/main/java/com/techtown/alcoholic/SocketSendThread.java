@@ -54,20 +54,20 @@ public class SocketSendThread extends Thread {
         synchronized (socket) {
             try {
                 if (socket == null || socket.isClosed() || !socket.isConnected()) {
-//                    Log.i(TAG, "run: 소켓연결 시도");
+                    Log.i(TAG, "run: 소켓연결 시도");
                     //소켓 연결
                     socket.connect(new InetSocketAddress(url, SERVER_PORT));
                     pw = new PrintWriter(new OutputStreamWriter(socket.getOutputStream(), StandardCharsets.UTF_8), true);
 
-//                    Log.i(TAG, "run: 소켓연결 되었습니다");
+                    Log.i(TAG, "run: 소켓연결 되었습니다");
                     return true;
                 } else if (socket.isConnected()) {
-//                    Log.i(TAG, "run: 소켓 연결되어있음");
+                    Log.i(TAG, "run: 소켓 연결되어있음");
                     pw = new PrintWriter(new OutputStreamWriter(socket.getOutputStream(), StandardCharsets.UTF_8), true);
                     return true;
                 }
             } catch (Exception e) {
-//                Log.e(TAG, "run: 소켓연결오류", e);
+                Log.e(TAG, "run: 소켓연결오류", e);
                 return false;
             }
             return false;

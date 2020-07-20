@@ -5,8 +5,9 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 
-
+import android.app.Activity;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.util.Log;
@@ -49,6 +50,9 @@ public class RoomActivity extends AppCompatActivity {
         setContentView(R.layout.activity_room);
 
         context=this;
+
+
+
 
         fragmentManager = getSupportFragmentManager();
 
