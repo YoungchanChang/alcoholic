@@ -4,6 +4,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
 import android.Manifest;
+import android.app.Activity;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.util.Log;
@@ -26,7 +29,7 @@ public class RoomSearchingActivity extends AppCompatActivity {
     CameraSource cameraSource;
     SurfaceView cameraSurface;
     Button btn_cancel;
-
+    String barcodeContents;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,7 +54,7 @@ public class RoomSearchingActivity extends AppCompatActivity {
         cameraSource = new CameraSource
                 .Builder(this, barcodeDetector)
                 .setFacing(CameraSource.CAMERA_FACING_BACK)
-                .setRequestedFps(29.8f) // 프레임 높을 수록 리소스를 많이 먹겠죠
+                .setRequestedFps(0.01f) // 프레임 높을 수록 리소스를 많이 먹겠죠
                 .setRequestedPreviewSize(1080, 1920)    // 확실한 용도를 잘 모르겠음. 필자는 핸드폰 크기로 설정
                 .setAutoFocusEnabled(true)  // AutoFocus를 안하면 초점을 못 잡아서 화질이 많이 흐립니다.
                 .build();
@@ -95,17 +98,33 @@ public class RoomSearchingActivity extends AppCompatActivity {
                 // 바코드가 인식되었을 때 무슨 일을 할까?
                 final SparseArray<Barcode> barcodes = detections.getDetectedItems();
                 if(barcodes.size() != 0) {
-                    String barcodeContents = barcodes.valueAt(0).displayValue; // 바코드 인식 결과물
-
-
-
+                    barcodeContents = barcodes.valueAt(0).displayValue; // 바코드 인식 결과물
 
                     //바코드 인식했을 때 결과가 나와
                     Log.d("Detection", barcodeContents);
 
                     //1. 서버에 해당되는 결과를 보내.
                     //2. 방이 일치할 때, 처리해야됨.
+                    //로그인 성공시에 유저 info 저장시에 쓰일 SharedPref
+                    SharedPreferences pref = getSharedPreferences("USER_INFO", Activity.MODE_PRIVATE);;
+                    SharedPreferences.Editor editor = pref.edit();
+                    editor.putString("captainName", barcodeContents);
+                    editor.commit();
+
+
+                    //barcodeContents의 String값은 방장 이름 값으로 서버에 보내면 된다.
+                    String userName = pref.getString("userName", "");
+
+
+
+                    Intent goHome = new Intent(getApplicationContext(), RoomActivity.class);
+                    //user_id를 전달하면 메인홈에서 바로 SELECT문으로 회원정보 가져올 것이다.
+                    startActivity(goHome);
+                    finish();
+                    cameraSource.stop();
                 }
+
+
             }
         });
 
