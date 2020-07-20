@@ -1,4 +1,4 @@
-package com.techtown.alcoholic.Fragment;
+package com.techtown.alcoholic.Activity;
 
 import android.content.Context;
 
@@ -30,7 +30,7 @@ public class RoomGameListActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
 
-
+        setContentView(R.layout.activity_room_game_list);
 
     gameDictionary= findViewById(R.id.gameDictionary);
         gameYoutube= findViewById(R.id.gameYoutube);

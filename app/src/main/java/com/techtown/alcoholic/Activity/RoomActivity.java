@@ -2,8 +2,6 @@ package com.techtown.alcoholic.Activity;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 
 
 import android.annotation.SuppressLint;
@@ -21,7 +19,6 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.EncodeHintType;
@@ -29,7 +26,6 @@ import com.google.zxing.MultiFormatWriter;
 import com.google.zxing.common.BitMatrix;
 import com.journeyapps.barcodescanner.BarcodeEncoder;
 
-import com.techtown.alcoholic.Fragment.RoomGameListActivity;
 import com.techtown.alcoholic.R;
 import com.techtown.alcoholic.SingleToneSocket;
 import com.techtown.alcoholic.SocketReceiveThread;
@@ -80,7 +76,7 @@ public class RoomActivity extends AppCompatActivity {
         btnRoomGameListFragment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent goHome = new Intent(getApplicationContext(), RoomGameListActivity.class);
+                Intent goHome = new Intent(getApplicationContext(), RoomGameList2Activity.class);
                 startActivity(goHome);
                 overridePendingTransition(0, 0);
             }

@@ -1,15 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/backgroundColor"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".Activity.RoomGameListActivity">
+    tools:context=".Activity.RoomActivity">
+
+
+
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@+id/bottom_panel"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:background="@color/alcoholColorLight">
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/topPanel"
@@ -37,9 +45,9 @@
             android:id="@+id/LinearLayoutRoomInfo"
             android:layout_width="0dp"
             android:layout_height="0dp"
+            android:layout_marginBottom="30dp"
             android:background="@drawable/border2"
             android:orientation="vertical"
-            android:layout_marginBottom="30dp"
 
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="@id/endPanel"
@@ -55,131 +63,156 @@
                 android:text="@string/gameList"
                 android:textColor="#fff"
                 android:textStyle="bold" />
+
             <LinearLayout
                 android:id="@+id/gameDictionary"
-                android:focusable="true"
-
-                android:clickable="true"
-                android:padding="10dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:padding="10dp">
+
                 <ImageView
                     android:id="@+id/gameImage"
-                    android:background="@android:color/transparent"
-                    android:src="@drawable/dictionary"
                     android:layout_width="80dp"
-                    android:layout_height="80dp"/>
+                    android:layout_height="80dp"
+                    android:background="@android:color/transparent"
+                    android:src="@drawable/dictionary" />
+
                 <TextView
                     android:id="@+id/gameName"
-                    android:layout_marginStart="30dp"
                     android:layout_width="match_parent"
                     android:layout_height="80dp"
-                    android:text="초성게임"
+                    android:layout_marginStart="30dp"
                     android:gravity="center_vertical"
-                    android:textStyle="bold"
-                    android:textSize="20sp"/>
+                    android:text="초성게임"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
 
             </LinearLayout>
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:background="#c2c2c2"/>
+                android:background="#c2c2c2" />
+
             <LinearLayout
                 android:id="@+id/gameYoutube"
-                android:focusable="true"
-
-                android:clickable="true"
-                android:padding="10dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:padding="10dp">
+
                 <ImageView
                     android:layout_width="80dp"
-                    android:src="@drawable/youtube"
+                    android:layout_height="80dp"
                     android:background="@android:color/transparent"
-                    android:layout_height="80dp"/>
+                    android:src="@drawable/youtube" />
+
                 <TextView
-                    android:layout_marginStart="30dp"
                     android:layout_width="match_parent"
                     android:layout_height="80dp"
-                    android:text="높은 조회수를 찾아라"
+                    android:layout_marginStart="30dp"
                     android:gravity="center_vertical"
-                    android:textStyle="bold"
-                    android:textSize="20sp"/>
+                    android:text="높은 조회수를 찾아라"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
 
             </LinearLayout>
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:background="#c2c2c2"/>
+                android:background="#c2c2c2" />
+
             <LinearLayout
-                android:focusable="true"
-                android:clickable="true"
                 android:id="@+id/gameTenor"
-                android:padding="10dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:padding="10dp">
+
                 <ImageView
-                    android:src="@drawable/tenor"
                     android:layout_width="80dp"
-                    android:layout_height="80dp"/>
+                    android:layout_height="80dp"
+                    android:src="@drawable/tenor" />
+
                 <TextView
-                    android:layout_marginStart="30dp"
                     android:layout_width="match_parent"
                     android:layout_height="80dp"
-                    android:text="전국물건자랑"
+                    android:layout_marginStart="30dp"
                     android:gravity="center_vertical"
-                    android:textStyle="bold"
-                    android:textSize="20sp"/>
+                    android:text="전국물건자랑"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
 
             </LinearLayout>
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:background="#c2c2c2"/>
+                android:background="#c2c2c2" />
+
             <LinearLayout
                 android:id="@+id/gameShakeIt"
-                android:padding="10dp"
-                android:focusable="true"
-                android:clickable="true"
                 android:layout_width="match_parent"
+
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:padding="10dp">
+
                 <ImageView
-                    android:src="@drawable/shakeitshakeit"
                     android:layout_width="80dp"
-                    android:layout_height="80dp"/>
+                    android:layout_height="80dp"
+                    android:src="@drawable/shakeitshakeit" />
+
                 <TextView
-                    android:layout_marginStart="30dp"
                     android:layout_width="match_parent"
                     android:layout_height="80dp"
-                    android:text="쉐킷쉐킷"
+                    android:layout_marginStart="30dp"
                     android:gravity="center_vertical"
-                    android:textStyle="bold"
-                    android:textSize="20sp"/>
+                    android:text="쉐킷쉐킷"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
 
             </LinearLayout>
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:background="#c2c2c2"/>
-
-
+                android:background="#c2c2c2" />
 
 
         </LinearLayout>
 
 
-
-
-
-
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-</FrameLayout>
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/bottom_panel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.9" />
+
+    <Button
+        android:id="@+id/btn_RoomInfoFragment"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:text="방정보"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/btn_RoomGameListFragment"
+        app:layout_constraintTop_toTopOf="@id/bottom_panel" />
+
+    <Button
+        android:id="@+id/btn_RoomGameListFragment"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:text="게임목록"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/btn_RoomInfoFragment"
+        app:layout_constraintTop_toTopOf="@id/bottom_panel" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
