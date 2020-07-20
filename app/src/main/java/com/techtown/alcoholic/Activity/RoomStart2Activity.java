@@ -6,10 +6,11 @@ import android.os.Bundle;
 import android.widget.ImageView;
 
 import com.techtown.alcoholic.R;
-
+import com.bumptech.glide.Glide;
 public class RoomStart2Activity extends AppCompatActivity {
 
     ImageView image_gif;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -17,6 +18,8 @@ public class RoomStart2Activity extends AppCompatActivity {
         setContentView(R.layout.activity_room_start2);
 
         image_gif = findViewById(R.id.image_gif);
+        Glide.with(this).asGif().load(R.drawable.tenor).into(image_gif);
+
 
     }
 }

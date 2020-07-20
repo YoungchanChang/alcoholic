@@ -55,7 +55,7 @@ public class RoomStartActivity extends AppCompatActivity implements AutoPermissi
         editTextNickname = findViewById(R.id.editTextNickname);
         editTextRoomName = findViewById(R.id.editTextRoomName);
 
-        basicFirst= findViewById(R.id.btnSearchingRoom);
+        basicFirst= findViewById(R.id.basicFirst);
         basicFirst.setOnClickListener(this);
         AutoPermissions.Companion.loadAllPermissions(this, 101);
 
