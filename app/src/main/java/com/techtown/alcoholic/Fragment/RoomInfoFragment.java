@@ -15,6 +15,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.EncodeHintType;
@@ -33,7 +35,9 @@ public class RoomInfoFragment extends Fragment {
     private ImageView imageViewQRCode;
     //QR코드 값 받기
     private String textForQRCode;
-
+    TextView userNickName1,userNickName2,userNickName3,userNumber;
+    LinearLayout user1,user2,user3;
+    int index=0;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -41,13 +45,27 @@ public class RoomInfoFragment extends Fragment {
         view = inflater.inflate(R.layout.fragment_room_info,container,false);
         mContext=getActivity();
 
-
         //SharedPref에서 유저정보를 가져와서 유저에게 전달한다.
         SharedPreferences pref= mContext.getSharedPreferences("USER_INFO", Activity.MODE_PRIVATE);
         textForQRCode = pref.getString("captainName", "");
 
         imageViewQRCode = view.findViewById(R.id.QRCode);
         QRFunction();
+
+        user1 =view.findViewById(R.id.user1);
+        user2 =view.findViewById(R.id.user2);
+        user3 =view.findViewById(R.id.user3);
+        userNickName1 =view.findViewById(R.id.userNickname1);
+        userNickName2 =view.findViewById(R.id.userNickname2);
+        userNickName3 =view.findViewById(R.id.userNickname3);
+        userNumber=view.findViewById(R.id.userNumber);
+        userNumber.setText(index);
+
+        user2.setVisibility(View.GONE);
+        user3.setVisibility(View.GONE);
+        userNickName1.setText(textForQRCode);
+
+
 
         return  view;
     }
