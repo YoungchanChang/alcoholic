@@ -144,7 +144,7 @@ public class RoomStartActivity extends AppCompatActivity implements AutoPermissi
                         //소켓수신 스레드에서 데이터 받을 때
                         String value = data.getString("value");
 //                        new JSONArray(value)
-                        Toast.makeText(RoomStartActivity.this,value,Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(RoomStartActivity.this,value,Toast.LENGTH_SHORT).show();
                         String[] tokens = value.split(":");
                         if("gameStart".equals(tokens[0])) {
                             switch(tokens[1]){
