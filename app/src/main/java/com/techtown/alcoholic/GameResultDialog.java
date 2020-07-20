@@ -15,7 +15,8 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-public class GameResultDialog extends Dialog {
+public class
+GameResultDialog extends Dialog {
     private Context context;
     TextView textUserNickname1, textUserNickname2, textUserNickname3,textUserScore1,textUserScore2,textUserScore3;
      JSONArray jsonArray;
