@@ -39,19 +39,20 @@
             app:layout_constraintTop_toTopOf="@id/topPanel"
             app:layout_constraintStart_toStartOf="@id/startPanel"
             app:layout_constraintEnd_toEndOf="@id/endPanel"
-            android:background="#fff"
+            android:background="@drawable/border2"
             android:orientation="vertical">
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
                 android:text="@string/roomInfo"
-                android:background="@color/alcoholColor"
+                android:background="@drawable/border_bottom_none"
+                android:backgroundTint="@color/alcoholColor"
                 android:textColor="#fff"
                 android:textStyle="bold"
                 android:gravity="center" />
             <ImageView
                 android:id="@+id/QRCode"
-                android:background="#000"
+                android:background="@drawable/border2"
                 android:layout_width="150dp"
                 android:layout_height="150dp"/>
         </LinearLayout>
@@ -62,7 +63,7 @@
             android:layout_width="0dp"
             android:layout_height="0dp"
             app:layout_constraintBottom_toBottomOf="parent"
-            android:background="#fff"
+            android:background="@drawable/border2"
             android:layout_marginTop="20dp"
             android:orientation="vertical"
             android:layout_marginBottom="30dp"
@@ -75,7 +76,8 @@
                 android:layout_height="40dp"
                 android:orientation="horizontal"
                 android:gravity="center"
-                android:background="@color/alcoholColor">
+                android:background="@drawable/border_bottom_none"
+                android:backgroundTint="@color/alcoholColor">
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
