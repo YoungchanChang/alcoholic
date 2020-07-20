@@ -26,6 +26,7 @@ public class RoomStart2Activity extends AppCompatActivity implements View.OnClic
 
     AlertDialog.Builder ad;
 
+    AlertDialog.Builder adFindRoom;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,7 +56,7 @@ public class RoomStart2Activity extends AppCompatActivity implements View.OnClic
                 break;
             case R.id.imageFindRoom:
                 showDialogueFindRoom();
-
+                adFindRoom.show();
 
                 break;
         }
@@ -109,15 +110,15 @@ public class RoomStart2Activity extends AppCompatActivity implements View.OnClic
 
 
     public void showDialogueFindRoom(){
-        ad = new AlertDialog.Builder(RoomStart2Activity.this);
-        ad.setTitle("방장 닉네임 설정");       // 제목 설정
-        ad.setMessage("방장의 닉네임을 설정해 주세요.");   // 내용 설정
+        adFindRoom = new AlertDialog.Builder(RoomStart2Activity.this);
+        adFindRoom.setTitle("유저 닉네임 설정");       // 제목 설정
+        adFindRoom.setMessage("유저의 닉네임을 설정해 주세요.");   // 내용 설정
 
         final EditText et = new EditText(RoomStart2Activity.this);
-        ad.setView(et);
+        adFindRoom.setView(et);
 
 
-        ad.setPositiveButton("취소", new DialogInterface.OnClickListener() {
+        adFindRoom.setPositiveButton("취소", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
 
@@ -127,7 +128,7 @@ public class RoomStart2Activity extends AppCompatActivity implements View.OnClic
             }
         });
 
-        ad.setNegativeButton("확인", new DialogInterface.OnClickListener() {
+        adFindRoom.setNegativeButton("확인", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
 
