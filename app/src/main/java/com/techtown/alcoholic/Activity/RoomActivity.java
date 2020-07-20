@@ -72,8 +72,6 @@ public class RoomActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent goHome = new Intent(getApplicationContext(), RoomActivity.class);
-                //user_id를 전달하면 메인홈에서 바로 SELECT문으로 회원정보 가져올 것이다.
-                goHome.putExtra("user_id", "test");
                 startActivity(goHome);
                 overridePendingTransition(0, 0);
 
@@ -83,8 +81,6 @@ public class RoomActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent goHome = new Intent(getApplicationContext(), RoomGameListActivity.class);
-                //user_id를 전달하면 메인홈에서 바로 SELECT문으로 회원정보 가져올 것이다.
-                goHome.putExtra("user_id", "test");
                 startActivity(goHome);
                 overridePendingTransition(0, 0);
             }
