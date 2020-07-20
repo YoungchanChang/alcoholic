@@ -13,13 +13,7 @@
         <activity android:name=".Activity.RoomGameList2Activity"></activity>
         <activity android:name=".Activity.GameReadyActivity" />
         <activity android:name=".GameResultDialog" />
-        <activity android:name=".Activity.RoomStart2Activity" />
-        <activity android:name=".Activity.GameYoutubeViewsActivity" />
-        <activity android:name=".Activity.GameInitialSound" />
-        <activity android:name=".Activity.GameImageActivity" />
-        <activity android:name=".Activity.RoomActivity" />
-        <activity android:name=".Activity.RoomSearchingActivity" />
-        <activity android:name=".Activity.RoomStartActivity">
+        <activity android:name=".Activity.RoomStart2Activity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -30,6 +24,14 @@
 
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
+        </activity>
+        <activity android:name=".Activity.GameYoutubeViewsActivity" />
+        <activity android:name=".Activity.GameInitialSound" />
+        <activity android:name=".Activity.GameImageActivity" />
+        <activity android:name=".Activity.RoomActivity" />
+        <activity android:name=".Activity.RoomSearchingActivity" />
+        <activity android:name=".Activity.RoomStartActivity">
+
         </activity>
         <activity android:name=".MainActivity" />
         <activity android:name=".Activity.GameShakeItActivity" />
