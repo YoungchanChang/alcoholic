@@ -30,11 +30,11 @@ public class RoomStartActivity extends AppCompatActivity implements AutoPermissi
     Button btnSearchingRoom;
     EditText editTextNickname;
     EditText editTextRoomName;
-
-    SocketSendThread socketSendThread;
-    SocketReceiveThread socketReceiveThread;
-
-    Handler handler;
+//
+//    SocketSendThread socketSendThread;
+//    SocketReceiveThread socketReceiveThread;
+//
+//    Handler handler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,9 +61,9 @@ public class RoomStartActivity extends AppCompatActivity implements AutoPermissi
         basicFirst.setOnClickListener(this);
         AutoPermissions.Companion.loadAllPermissions(this, 101);
 
-        handler = getHandler();
-        socketReceiveThread = SocketReceiveThread.getInstance(getString(R.string.server_ip),handler, SingleToneSocket.getInstance());
-        socketSendThread = socketSendThread.getInstance(getString(R.string.server_ip),SingleToneSocket.getInstance());
+//        handler = getHandler();
+//        socketReceiveThread = SocketReceiveThread.getInstance(getString(R.string.server_ip),handler, SingleToneSocket.getInstance());
+//        socketSendThread = socketSendThread.getInstance(getString(R.string.server_ip),SingleToneSocket.getInstance());
 
     }
 
@@ -89,19 +89,19 @@ public class RoomStartActivity extends AppCompatActivity implements AutoPermissi
         switch (v.getId()){
             case R.id.btnShakeIt:
                 String requestShakeIt = "gameStart:shakeIt";
-                socketSendThread.sendData(requestShakeIt);
+//                socketSendThread.sendData(requestShakeIt);
                 break;
             case R.id.btnImageGame:
                 String requestImageGame = "gameStart:imageGame";
-                socketSendThread.sendData(requestImageGame);
+//                socketSendThread.sendData(requestImageGame);
                 break;
             case R.id.btnInitialSound:
                 String requestInitialSound = "gameStart:initialSound";
-                socketSendThread.sendData(requestInitialSound);
+//                socketSendThread.sendData(requestInitialSound);
                 break;
             case R.id.btnYoutubeViews:
                 String requestYoutubeViews = "gameStart:youtubeViews";
-                socketSendThread.sendData(requestYoutubeViews);
+//                socketSendThread.sendData(requestYoutubeViews);
                 break;
             case R.id.basicFirst:
                 Intent intent7 = new Intent(RoomStartActivity.this,RoomStart2Activity.class);
@@ -111,13 +111,13 @@ public class RoomStartActivity extends AppCompatActivity implements AutoPermissi
             case R.id.btnMakeRoom:
                 if(!editTextNickname.getText().toString().equals("")&&!editTextRoomName.getText().toString().equals("")) {
                     String request = "makeRoom:"+editTextNickname.getText().toString()+":"+editTextRoomName.getText().toString();
-                    socketSendThread.sendData(request);
+//                    socketSendThread.sendData(request);
                 }
                 break;
             case R.id.btnSearchingRoom:
                 if(!editTextNickname.getText().toString().equals("")&&!editTextRoomName.getText().toString().equals("")) {
                     String request = "joinRoom:"+editTextNickname.getText().toString()+":"+editTextRoomName.getText().toString();
-                    socketSendThread.sendData(request);
+//                    socketSendThread.sendData(request);
                 }
                 break;
             case R.id.btnReadyGame:

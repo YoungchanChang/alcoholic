@@ -4,7 +4,9 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -46,18 +48,35 @@ public class GameReadyActivity extends AppCompatActivity {
         textExplain = findViewById(R.id.textExplain);
         btnStart = findViewById(R.id.btnStart);
 
+        handler = getHandler();
+        socketReceiveThread = SocketReceiveThread.getInstance(getString(R.string.server_ip),handler,SingleToneSocket.getInstance());
+        socketSendThread = SocketSendThread.getInstance(getString(R.string.server_ip),SingleToneSocket.getInstance());
+
+        String request;
+        SharedPreferences pref = getSharedPreferences("USER_INFO", Activity.MODE_PRIVATE);
+        if(pref.getString("captainTRUE","FALSE").equals("TRUE")){
+            request = "makeRoom:"+pref.getString("captainName","");
+        }else {
+            request = "joinRoom:"+pref.getString("userName","")+":"+pref.getString("captainName","");
+        }
+        socketSendThread.sendData(request);
+        Log.e(TAG, "TestConfirm 온클릭"+request);
+
         Intent get_intent = getIntent();
         final Integer gameGenre = get_intent.getIntExtra("gameGenre", 1);
 
-        handler = getHandler();
-        socketReceiveThread = SocketReceiveThread.getInstance(getString(R.string.server_ip),handler, SingleToneSocket.getInstance());
-        socketSendThread = socketSendThread.getInstance(getString(R.string.server_ip), SingleToneSocket.getInstance());
+//        handler = getHandler();
+//        socketReceiveThread = SocketReceiveThread.getInstance(getString(R.string.server_ip),handler, SingleToneSocket.getInstance());
+//        socketSendThread = socketSendThread.getInstance(getString(R.string.server_ip), SingleToneSocket.getInstance());
+
+
+        Log.e(TAG, "TestConfirm 온클릭"+request);
 
         btnStart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String request = "gameStart:"+games[gameGenre-1];
-                Log.e(TAG, "onClick: "+request);
+                String request = "gameStart:shakeIt";
+                Log.e(TAG, "onClick: 온클릭"+request);
                 socketSendThread.sendData(request);
             }
         });
@@ -77,9 +96,9 @@ public class GameReadyActivity extends AppCompatActivity {
                 btnStart.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Intent goGame = new Intent(getApplicationContext(), GameInitialSound.class);
-                        startActivity(goGame);
-                        finish();
+                        String request = "gameStart:initialSound";
+                        Log.e(TAG, "onClick: 온클릭"+request);
+                        socketSendThread.sendData(request);
                     }
                 });
                  break;
@@ -91,9 +110,9 @@ public class GameReadyActivity extends AppCompatActivity {
                 btnStart.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Intent goGame2 = new Intent(getApplicationContext(), GameYoutubeViewsActivity.class);
-                        startActivity(goGame2);
-                        finish();
+                        String request = "gameStart:youtubeView";
+                        Log.e(TAG, "onClick: 온클릭"+request);
+                        socketSendThread.sendData(request);
                     }
                 });
                 break;
@@ -105,9 +124,9 @@ public class GameReadyActivity extends AppCompatActivity {
                 btnStart.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Intent goGame3 = new Intent(getApplicationContext(), GameImageActivity.class);
-                        startActivity(goGame3);
-                        finish();
+                        String request = "gameStart:imageGame";
+                        Log.e(TAG, "onClick: 온클릭"+request);
+                        socketSendThread.sendData(request);
 
                     }
                 });
@@ -121,10 +140,9 @@ public class GameReadyActivity extends AppCompatActivity {
                 btnStart.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Intent goGame4 = new Intent(getApplicationContext(), GameShakeItActivity.class);
-                        startActivity(goGame4);
-                        finish();
-
+                        String request = "gameStart:shakeIt";
+                        Log.e(TAG, "onClick: 온클릭"+request);
+                        socketSendThread.sendData(request);
                     }
                 });
 
@@ -132,6 +150,8 @@ public class GameReadyActivity extends AppCompatActivity {
             default :
                 break;
         }
+
+
     }
     @SuppressLint("HandlerLeak")
     private Handler getHandler() {

@@ -40,10 +40,10 @@ public class RoomSearchingActivity extends AppCompatActivity {
     Button btn_cancel;
     String barcodeContents;
 
-    Handler handler;
-
-    SocketReceiveThread socketReceiveThread;
-    SocketSendThread socketSendThread;
+//    Handler handler;
+//
+//    SocketReceiveThread socketReceiveThread;
+//    SocketSendThread socketSendThread;
 
     String userName = "";
 
@@ -135,7 +135,7 @@ public class RoomSearchingActivity extends AppCompatActivity {
                     //barcodeContents의 String값은 방장 이름 값으로 서버에 보내면 된다.
                     userName = pref.getString("userName", "");
                     String request = "joinRoom:"+userName+":"+barcodeContents;
-                    socketSendThread.sendData(request);
+//                    socketSendThread.sendData(request);
 
 
                     Intent goHome = new Intent(getApplicationContext(), RoomActivity.class);
@@ -146,10 +146,10 @@ public class RoomSearchingActivity extends AppCompatActivity {
             }
         });
 
-        handler = getHandler();
-
-        socketSendThread = socketSendThread.getInstance(getString(R.string.server_ip), SingleToneSocket.getInstance());
-        socketReceiveThread = SocketReceiveThread.getInstance(getString(R.string.server_ip),handler, SingleToneSocket.getInstance());
+//        handler = getHandler();
+//
+//        socketSendThread = socketSendThread.getInstance(getString(R.string.server_ip), SingleToneSocket.getInstance());
+//        socketReceiveThread = SocketReceiveThread.getInstance(getString(R.string.server_ip),handler, SingleToneSocket.getInstance());
     }
 
     @SuppressLint("HandlerLeak")

@@ -38,10 +38,10 @@ public class RoomStart2Activity extends AppCompatActivity implements View.OnClic
 
     AlertDialog.Builder adFindRoom;
 
-    Handler handler;
-
-    SocketReceiveThread socketReceiveThread;
-    SocketSendThread socketSendThread;
+//    Handler handler;
+//
+//    SocketReceiveThread socketReceiveThread;
+//    SocketSendThread socketSendThread;
 
 
     @Override
@@ -59,10 +59,10 @@ public class RoomStart2Activity extends AppCompatActivity implements View.OnClic
         imageFindRoom.setOnClickListener(this);
 
         //핸들러와 소켓통신 스레드
-        handler = getHandler();
-
-        socketSendThread = socketSendThread.getInstance(getString(R.string.server_ip), SingleToneSocket.getInstance());
-        socketReceiveThread = SocketReceiveThread.getInstance(getString(R.string.server_ip),handler, SingleToneSocket.getInstance());
+//        handler = getHandler();
+//
+//        socketSendThread = socketSendThread.getInstance(getString(R.string.server_ip), SingleToneSocket.getInstance());
+//        socketReceiveThread = SocketReceiveThread.getInstance(getString(R.string.server_ip),handler, SingleToneSocket.getInstance());
 
     }
 
@@ -149,7 +149,7 @@ public class RoomStart2Activity extends AppCompatActivity implements View.OnClic
 
                 //value값이 captain
                 String request = "makeRoom:"+value;
-                socketSendThread.sendData(request);
+//                socketSendThread.sendData(request);
 
                 Intent goHome = new Intent(getApplicationContext(), RoomActivity.class);
                 //user_id를 전달하면 메인홈에서 바로 SELECT문으로 회원정보 가져올 것이다.

@@ -49,10 +49,10 @@ public class RoomActivity extends AppCompatActivity {
     TextView userNickName1,userNickName2,userNickName3,userNumber;
     LinearLayout user1,user2,user3;
     int index=0;
-    Handler handler;
-
-    SocketReceiveThread socketReceiveThread;
-    SocketSendThread socketSendThread;
+//    Handler handler;
+//
+//    SocketReceiveThread socketReceiveThread;
+//    SocketSendThread socketSendThread;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -113,8 +113,8 @@ public class RoomActivity extends AppCompatActivity {
             userNickName2.setText("플레이어 닉네임 : " + userName);
         }
 
-        handler = getHandler();
-        socketReceiveThread = SocketReceiveThread.getInstance(getString(R.string.server_ip),handler, SingleToneSocket.getInstance());
+//        handler = getHandler();
+//        socketReceiveThread = SocketReceiveThread.getInstance(getString(R.string.server_ip),handler, SingleToneSocket.getInstance());
 
     }
 
