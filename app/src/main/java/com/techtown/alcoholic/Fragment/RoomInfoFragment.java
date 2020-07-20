@@ -1,5 +1,6 @@
 package com.techtown.alcoholic.Fragment;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -7,8 +8,11 @@ import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
+import android.os.Handler;
+import android.os.Message;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,13 +21,18 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.EncodeHintType;
 import com.google.zxing.MultiFormatWriter;
 import com.google.zxing.common.BitMatrix;
 import com.journeyapps.barcodescanner.BarcodeEncoder;
+import com.techtown.alcoholic.Activity.GameShakeItActivity;
 import com.techtown.alcoholic.R;
+import com.techtown.alcoholic.SingleToneSocket;
+import com.techtown.alcoholic.SocketReceiveThread;
+import com.techtown.alcoholic.SocketSendThread;
 
 import java.util.Hashtable;
 
@@ -38,6 +47,11 @@ public class RoomInfoFragment extends Fragment {
     TextView userNickName1,userNickName2,userNickName3,userNumber;
     LinearLayout user1,user2,user3;
     int index=0;
+    Handler handler;
+
+    SocketReceiveThread socketReceiveThread;
+    SocketSendThread socketSendThread;
+    String TAG = "RoomInfoFragment";
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -66,6 +80,7 @@ public class RoomInfoFragment extends Fragment {
         userNickName1.setText(textForQRCode);
 
 
+        socketReceiveThread = SocketReceiveThread.getInstance(getString(R.string.server_ip),handler, SingleToneSocket.getInstance());
 
         return  view;
     }
@@ -89,5 +104,31 @@ public class RoomInfoFragment extends Fragment {
             imageViewQRCode.setImageBitmap(bitmap);
 
         }catch (Exception e){}
+    }
+
+    @SuppressLint("HandlerLeak")
+    private Handler getHandler() {
+        return new Handler(){
+            @SuppressLint("SetTextI18n")
+            @Override
+            public void handleMessage(@NonNull Message msg) {
+                super.handleMessage(msg);
+                Bundle data = msg.getData();
+                Log.i(TAG, "handleMessage: 데이테 전달받음"+data.toString());
+                switch (data.getString("isFrom")) {
+                    case "timerThread":
+                        //타이머스레드에서 데이터 받을 때
+
+                        break;
+                    case "receiveThread":
+                        //소켓수신 스레드에서 데이터 받을 때
+
+                        break;
+                    default:
+                        Log.i(TAG, "handleMessage: 아무것도 클릭되지 않음");
+                        break;
+                }
+            }
+        };
     }
 }
