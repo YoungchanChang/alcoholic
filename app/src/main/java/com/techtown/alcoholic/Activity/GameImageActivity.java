@@ -327,6 +327,7 @@ public class GameImageActivity extends AppCompatActivity implements View.OnClick
                                 if(!isOver) {
                                     Log.d(TAG, "TimeLeftEnd " + timeLimit);
                                     //count변수 15초가 흘러간다.
+                                    //TODO
 //                                    String request = "gameResult:"+Integer.toString(timeLimit);
 //                                    socketSendThread.sendData(request);
                                 }
