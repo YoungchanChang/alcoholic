@@ -16,6 +16,7 @@ import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -46,7 +47,7 @@ import java.util.Random;
 public class GameInitialSound extends AppCompatActivity {
 
     EditText enterWord;
-    TextView textResult,textResultDescription,firstLetter,secondLetter,textRank;
+    TextView textResult,textResultDescription,firstLetter,secondLetter,textRank,rankOne,rankTwo,rankThree;
     Button btnEnter;
     ArrayList<String> title = new ArrayList<>();
     ArrayList<String> description = new ArrayList<>();
@@ -59,7 +60,7 @@ public class GameInitialSound extends AppCompatActivity {
     String TAG="GameInitialSound";
     String rank;
     ArrayList<GameResultItem> gameResultItems = new ArrayList<>();
-
+    LinearLayout linearLank;
     Long startTimestamp;
     Long endTimestamp;
 //
@@ -100,8 +101,11 @@ public class GameInitialSound extends AppCompatActivity {
         String letter[] =  {"ㄱ","ㄴ","ㄷ","ㄹ","ㅁ","ㅂ","ㅅ","ㅇ","ㅈ","ㅊ","ㅋ","ㅌ"};
 
 
+        rankOne= findViewById(R.id.rankOne);
+        rankTwo= findViewById(R.id.rankTwo);
+        rankThree= findViewById(R.id.rankThree);
+        linearLank =findViewById(R.id.LinearRank);
 
-        textRank = findViewById(R.id.rank);
         firstLetter = findViewById(R.id.firstInitialLetter);
         secondLetter = findViewById(R.id.secondInitialLetter);
         textResultDescription = findViewById(R.id.textResultDescription);
@@ -301,24 +305,32 @@ public class GameInitialSound extends AppCompatActivity {
                                 long score2 = Integer.parseInt(userScore2);
 
                                 if(score<score1&&score1<score2) {
-
-                                    rank ="1등:"+userNickname2+" 2등:"+userNickname1+" 3등:"+userNickname1;
+                                    rankOne.setText("1등:"+userNickname2);
+                                    rankTwo.setText("2등:"+userNickname1);
+                                    rankThree.setText("3등:"+userNickname1);
                                 } else if(score<score2&&score2<score1) {
-
-                                    rank ="1등:"+userNickname1+" 2등:"+userNickname2+" 3등:"+userNickname;
+                                    rankOne.setText("1등:"+userNickname1);
+                                    rankTwo.setText("2등:"+userNickname2);
+                                    rankThree.setText("3등:"+userNickname);
                                 } else if(score1<score&&score<score2) {
-
-                                    rank= "1등:"+userNickname2+" 2등:"+userNickname+" 3등:"+userNickname1;
+                                    rankOne.setText("1등:"+userNickname2);
+                                    rankTwo.setText("2등:"+userNickname);
+                                    rankThree.setText("3등:"+userNickname1);
                                 } else if(score1<score2&&score2<score) {
+                                    rankOne.setText("1등:"+userNickname);
+                                    rankTwo.setText("2등:"+userNickname2);
+                                    rankThree.setText("3등:"+userNickname1);
 
-                                    rank="1등:"+userNickname+" 2등:"+userNickname2+" 3등:"+userNickname1;
                                 } else if(score2<score&&score<score1) {
-
-                                    rank="1등:"+userNickname1+" 2등:"+userNickname+" 3등:"+userNickname2;
+                                    rankOne.setText("1등:"+userNickname1);
+                                    rankTwo.setText("2등:"+userNickname);
+                                    rankThree.setText("3등:"+userNickname2);
                                 } else if(score2<score1&&score1<score) {
-
-                                    rank= "1등:" + userNickname + " 2등:" + userNickname1 + " 3등:" + userNickname2;
+                                    rankOne.setText("1등:"+userNickname);
+                                    rankTwo.setText("2등:"+userNickname1);
+                                    rankThree.setText("3등:"+userNickname2);
                                 }
+                                linearLank.setVisibility(View.VISIBLE);
 
 
                                 //결과값 보여줌

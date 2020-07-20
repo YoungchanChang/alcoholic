@@ -27,6 +27,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -46,6 +47,9 @@ import com.techtown.alcoholic.R;
 import com.techtown.alcoholic.SingleToneSocket;
 import com.techtown.alcoholic.SocketSendThread;
 import com.techtown.alcoholic.TimerThread;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -67,8 +71,8 @@ public class GameImageActivity extends AppCompatActivity implements View.OnClick
 
     ImageView imageMyPic;
     ImageView imageRight;
-
-    TextView textSentence;
+    LinearLayout linearLank;
+    TextView textSentence,rankOne,rankTwo,rankThree;
     Button btnTakePicture;
     File file;
 
@@ -87,6 +91,10 @@ public class GameImageActivity extends AppCompatActivity implements View.OnClick
 
         //FirebaseVisionImage image = FirebaseVisionImage.fromBitmap(bitmap);
         //startCamera();
+        rankOne= findViewById(R.id.rankOne);
+        rankTwo= findViewById(R.id.rankTwo);
+        rankThree= findViewById(R.id.rankThree);
+        linearLank =findViewById(R.id.LinearRank);
         imageMyPic = findViewById(R.id.pictureView);
         imageRight = findViewById(R.id.imageRight);
         textSentence = findViewById(R.id.textSentence);
@@ -206,6 +214,8 @@ public class GameImageActivity extends AppCompatActivity implements View.OnClick
                                         textTimeLeft.setVisibility(View.INVISIBLE);
                                         //TODO
                                         //데이터를 서버에 보내야 한다.
+                                        String request = "gameResult:"+endTime;
+                                        socketSendThread.sendData(request);
                                         Log.d(TAG, "endTime " + endTime);
                                         dismissProgressDialogue();
                                         break;
@@ -327,9 +337,9 @@ public class GameImageActivity extends AppCompatActivity implements View.OnClick
                                 if(!isOver) {
                                     Log.d(TAG, "TimeLeftEnd " + timeLimit);
                                     //count변수 15초가 흘러간다.
-                                    //TODO
-//                                    String request = "gameResult:"+Integer.toString(timeLimit);
-//                                    socketSendThread.sendData(request);
+
+                                    String request = "gameResult:"+Integer.toString(timeLimit);
+                                    socketSendThread.sendData(request);
                                 }
 
                             }else {
@@ -341,8 +351,61 @@ public class GameImageActivity extends AppCompatActivity implements View.OnClick
                     case "receiveThread":
                         //소켓수신 스레드에서 데이터 받을 때
                         String value = data.getString("value");
-//                        new JSONArray(value)
-//                        Toast.makeText(GameImageActivity.this,value,Toast.LENGTH_SHORT).show();
+
+                        Log.d("스위치","스위치 작동");
+                        try {
+                            JSONObject jsonObject = new JSONObject(value);
+
+                            String token[] = jsonObject.getString(0+"").split(":");
+                            String token1[] = jsonObject.getString(1+"").split(":");
+                            String token2[] = jsonObject.getString(2+"").split(":");
+                            //token 0 유저 닉네임
+                            //token 1 결과값
+
+                            String userNickname = token[0];
+                            String userScore = token[1];
+                            long score = Integer.parseInt(userScore);
+                            String userNickname1 = token1[0];
+                            String userScore1 = token1[1];
+                            long score1 = Integer.parseInt(userScore1);
+                            String userNickname2 = token2[0];
+                            String userScore2 = token2[1];
+                            long score2 = Integer.parseInt(userScore2);
+
+                            if(score<score1&&score1<score2) {
+                                rankOne.setText("1등:"+userNickname2);
+                                rankTwo.setText("2등:"+userNickname1);
+                                rankThree.setText("3등:"+userNickname);
+                            } else if(score<score2&&score2<score1) {
+                                rankOne.setText("1등:"+userNickname1);
+                                rankTwo.setText("2등:"+userNickname2);
+                                rankThree.setText("3등:"+userNickname);
+                            } else if(score1<score&&score<score2) {
+                                rankOne.setText("1등:"+userNickname2);
+                                rankTwo.setText("2등:"+userNickname);
+                                rankThree.setText("3등:"+userNickname1);
+                            } else if(score1<score2&&score2<score) {
+                                rankOne.setText("1등:"+userNickname);
+                                rankTwo.setText("2등:"+userNickname2);
+                                rankThree.setText("3등:"+userNickname1);
+                            } else if(score2<score&&score<score1) {
+                                rankOne.setText("1등:"+userNickname1);
+                                rankTwo.setText("2등:"+userNickname);
+                                rankThree.setText("3등:"+userNickname2);
+                            } else if(score2<score1&&score1<score) {
+                                rankOne.setText("1등:"+userNickname);
+                                rankTwo.setText("2등:"+userNickname1);
+                                rankThree.setText("3등:"+userNickname2);
+                            }
+                            linearLank.setVisibility(View.VISIBLE);
+
+
+                            //결과값 보여줌
+
+
+
+
+                        }catch (JSONException e){ e.printStackTrace();}
                         break;
                     default:
                         Log.i(TAG, "handleMessage: 아무것도 클릭되지 않음");

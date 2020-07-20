@@ -1,16 +1,22 @@
 package com.techtown.alcoholic.Activity;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -31,8 +37,13 @@ import com.google.api.services.youtube.model.SearchResult;
 import com.google.api.services.youtube.model.Thumbnail;
 import com.google.api.services.youtube.model.VideoStatistics;
 import com.google.gson.JsonArray;
+import com.techtown.alcoholic.GameResultItem;
 import com.techtown.alcoholic.HTTP.HTTPRequest;
 import com.techtown.alcoholic.R;
+import com.techtown.alcoholic.SingleToneSocket;
+import com.techtown.alcoholic.SocketReceiveThread;
+import com.techtown.alcoholic.SocketSendThread;
+import com.techtown.alcoholic.TimerThread;
 
 
 import org.json.JSONArray;
@@ -45,22 +56,63 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import static java.lang.Integer.parseInt;
+
 public class GameYoutubeViewsActivity extends AppCompatActivity {
 
+    private String TAG ="GAMEYOUTUBEVIEWS";
     private String API_KEY = "AIzaSyCXWxnu_c0IF-koLZm_wE5M6b5TKRIsGVc";
     private EditText enterWords;
-    private TextView tv_result,textResultTitle,textResultView,textWait,textKeyword;
+    private TextView tv_result,textResultTitle,textResultView,textWait,textKeyword,rankOne,rankTwo,rankThree;
     private String result;
     private String keyword = "먹방";
     String viewCount ="";
+    Handler handler;
+    String rank;
+    LinearLayout linearLank;
+    SocketReceiveThread socketReceiveThread;
+    SocketSendThread socketSendThread;
+
+    Long startTimestamp;
+    Long endTimestamp;
+    //
+    DisplayMetrics dm;
+    Boolean sendDate =true;
+    //0.
+    //1. 게임 시간이 0이 되면 시간초 관련 데이터를 서버에 보내
+    //2. 특정 조건을 완료하면 데이터를 서버에 보내
+    //2-1. 완료했으면 시간초가 멈춰야되. (멈추는 것 처럼 보여야되)
+    //내가 찍으면 시간초 관련된 뷰가 invisible처리
+    //3. 서버에서 3개의 관련 데이터가 왔을 때 다이얼로그 띄워준다.
+    //0초가 됬을 때는 안 보내져야 한다.
 
 
+    //게임 시작 기록하는 변수
+    long startTime;
+    //게임 끝났을 시간을 기록하는 변수, startTime과의 초가 게임 시간 차이이다.
+    long endTime;
+
+    //시간초가 실제로 내려가는 쓰레드
+    TimerThread timerThread;
+    //몇초인지 보여주는 뷰 ( Layout에 있어야 한다 )
+    TextView textTimeLeft;
+    //핸들러(쓰레드의 값을 보여주는 핸들러 객체)
+
+    //내가 지정하고 싶은 시간
+    int timeLimit = 15;
+
+    //특정조건 만족했을 시에 서버에 정보를 보내주지 않게 하는 변수
+    boolean isOver = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game_youtube_views);
 
+        rankOne= findViewById(R.id.rankOne);
+        rankTwo= findViewById(R.id.rankTwo);
+        rankThree= findViewById(R.id.rankThree);
+        linearLank =findViewById(R.id.LinearRank);
         tv_result = findViewById(R.id.textTitle);
         textResultTitle = findViewById(R.id.textResultTitle);
         textResultView = findViewById(R.id.textResultView);
@@ -86,6 +138,17 @@ public class GameYoutubeViewsActivity extends AppCompatActivity {
         });
 
 
+        handler = getHandler();
+        timerThread = new TimerThread(timeLimit, handler);
+        timerThread.start();
+        textTimeLeft = findViewById(R.id.textTimeLeft);
+        textTimeLeft.setText(timeLimit+"초 남았습니다");
+        socketSendThread = socketSendThread.getInstance(getString(R.string.server_ip), SingleToneSocket.getInstance());
+    }
+
+    protected void onResume() {
+        super.onResume();
+        startTimestamp = System.currentTimeMillis();
     }
 
 
@@ -132,8 +195,7 @@ public class GameYoutubeViewsActivity extends AppCompatActivity {
                         public void run() {
                             Log.d("Tag",result);
                             try{
-                               textResultTitle.setText(result);
-                                findViewById(R.id.btnSearch).setVisibility(View.GONE);
+
                             }catch(Exception e){e.printStackTrace();}
 
 
@@ -212,7 +274,14 @@ public class GameYoutubeViewsActivity extends AppCompatActivity {
                             @Override
                             public void run() {
                                 textResultView.setText(viewCount);
-
+                                textResultTitle.setText(result);
+                                textTimeLeft.setVisibility(View.INVISIBLE);
+                                findViewById(R.id.btnSearch).setVisibility(View.GONE);
+                                endTimestamp = System.currentTimeMillis();
+                                String request = "gameResult:"+(viewCount);
+                                socketSendThread.sendData(request);
+                                sendDate=false;
+                                Log.d(TAG,"send data");
                             }
                         });
                     }
@@ -232,6 +301,112 @@ public class GameYoutubeViewsActivity extends AppCompatActivity {
 
                         HTTPRequest.getInstance().makeRequest();
             }
+    }
+
+    @SuppressLint("HandlerLeak")
+    private Handler getHandler() {
+        return new Handler(){
+            @SuppressLint("SetTextI18n")
+            @Override
+            public void handleMessage(@NonNull Message msg) {
+                super.handleMessage(msg);
+                Bundle data = msg.getData();
+                Log.i(TAG, "handleMessage: 데이테 전달받음"+data.toString());
+                switch (data.getString("isFrom")) {
+                    case "receiveThread":
+                        //소켓수신 스레드에서 데이터 받을 때
+                        String value = data.getString("value");
+                        Log.d("스위치","스위치 작동");
+                        try {
+                            JSONObject jsonObject = new JSONObject(value);
+
+                            String token[] = jsonObject.getString(0+"").split(":");
+                            String token1[] = jsonObject.getString(1+"").split(":");
+                            String token2[] = jsonObject.getString(2+"").split(":");
+                                //token 0 유저 닉네임
+                                //token 1 결과값
+
+                            String userNickname = token[0];
+                            String userScore = token[1];
+                            long score = Integer.parseInt(userScore);
+                            String userNickname1 = token1[0];
+                            String userScore1 = token1[1];
+                            long score1 = Integer.parseInt(userScore1);
+                            String userNickname2 = token2[0];
+                            String userScore2 = token2[1];
+                            long score2 = Integer.parseInt(userScore2);
+
+                            if(score<score1&&score1<score2) {
+                                rankOne.setText("3등:"+userNickname2);
+                                rankTwo.setText("2등:"+userNickname1);
+                                rankThree.setText("1등:"+userNickname1);
+                            } else if(score<score2&&score2<score1) {
+                                rankOne.setText("3등:"+userNickname1);
+                                rankTwo.setText("2등:"+userNickname2);
+                                rankThree.setText("1등:"+userNickname);
+                            } else if(score1<score&&score<score2) {
+                                rankOne.setText("3등:"+userNickname2);
+                                rankTwo.setText("2등:"+userNickname);
+                                rankThree.setText("1등:"+userNickname1);
+                            } else if(score1<score2&&score2<score) {
+                                rankOne.setText("3등:"+userNickname);
+                                rankTwo.setText("2등:"+userNickname2);
+                                rankThree.setText("1등:"+userNickname1);
+
+                            } else if(score2<score&&score<score1) {
+                                rankOne.setText("3등:"+userNickname1);
+                                rankTwo.setText("2등:"+userNickname);
+                                rankThree.setText("1등:"+userNickname2);
+                            } else if(score2<score1&&score1<score) {
+                                rankOne.setText("3등:"+userNickname);
+                                rankTwo.setText("2등:"+userNickname1);
+                                rankThree.setText("1등:"+userNickname2);
+                            }
+                            linearLank.setVisibility(View.VISIBLE);
+
+
+                            //결과값 보여줌
+
+
+
+
+                        }catch (JSONException e){ e.printStackTrace();}
+
+
+                        //value = "joinRoom:유저닉네임"
+                        break;
+                    case "timerThread":
+                        //타이머스레드에서 데이터 받을 때
+
+                        Log.d(TAG, "TimeLeft " + timeLimit);
+                        if(data.getInt("second")==0) {
+                            textTimeLeft.setText("종료되었습니다");
+
+                            Log.d(TAG, "TimeLeftYet " + timeLimit);
+                            //게임결과 전송
+
+                            Log.d(TAG, "TimeLeftEnd " + timeLimit);
+                            //count변수 15초가 흘러간다.
+                            //TODO
+                            if (sendDate){
+                                endTimestamp = System.currentTimeMillis();
+                                String request = "gameResult:"+(endTimestamp-startTimestamp);
+                                socketSendThread.sendData(request);
+                            }
+
+
+                        }else {
+                            textTimeLeft.setText(data.getInt("second")+"초 남았습니다");
+                        }
+
+
+                        break;
+                    default:
+                        Log.i(TAG, "handleMessage: 아무것도 클릭되지 않음");
+                        break;
+                }
+            }
+        };
     }
 
 }
