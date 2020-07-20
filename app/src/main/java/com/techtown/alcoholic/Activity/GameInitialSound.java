@@ -307,7 +307,7 @@ public class GameInitialSound extends AppCompatActivity {
                                 if(score<score1&&score1<score2) {
                                     rankOne.setText("1등:"+userNickname2);
                                     rankTwo.setText("2등:"+userNickname1);
-                                    rankTwo.setText("3등:"+userNickname1);
+                                    rankThree.setText("3등:"+userNickname1);
                                 } else if(score<score2&&score2<score1) {
                                     rankOne.setText("1등:"+userNickname1);
                                     rankTwo.setText("2등:"+userNickname2);

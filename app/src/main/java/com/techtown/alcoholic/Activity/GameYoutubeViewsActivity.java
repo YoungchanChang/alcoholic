@@ -278,7 +278,7 @@ public class GameYoutubeViewsActivity extends AppCompatActivity {
                                 textTimeLeft.setVisibility(View.INVISIBLE);
                                 findViewById(R.id.btnSearch).setVisibility(View.GONE);
                                 endTimestamp = System.currentTimeMillis();
-                                String request = "gameResult:"+(endTimestamp-startTimestamp);
+                                String request = "gameResult:"+(viewCount);
                                 socketSendThread.sendData(request);
                                 sendDate=false;
                                 Log.d(TAG,"send data");
@@ -337,30 +337,30 @@ public class GameYoutubeViewsActivity extends AppCompatActivity {
                             long score2 = Integer.parseInt(userScore2);
 
                             if(score<score1&&score1<score2) {
-                                rankOne.setText("1등:"+userNickname2);
+                                rankOne.setText("3등:"+userNickname2);
                                 rankTwo.setText("2등:"+userNickname1);
-                                rankTwo.setText("3등:"+userNickname1);
+                                rankThree.setText("1등:"+userNickname1);
                             } else if(score<score2&&score2<score1) {
-                                rankOne.setText("1등:"+userNickname1);
+                                rankOne.setText("3등:"+userNickname1);
                                 rankTwo.setText("2등:"+userNickname2);
-                                rankThree.setText("3등:"+userNickname);
+                                rankThree.setText("1등:"+userNickname);
                             } else if(score1<score&&score<score2) {
-                                rankOne.setText("1등:"+userNickname2);
+                                rankOne.setText("3등:"+userNickname2);
                                 rankTwo.setText("2등:"+userNickname);
-                                rankThree.setText("3등:"+userNickname1);
+                                rankThree.setText("1등:"+userNickname1);
                             } else if(score1<score2&&score2<score) {
-                                rankOne.setText("1등:"+userNickname);
+                                rankOne.setText("3등:"+userNickname);
                                 rankTwo.setText("2등:"+userNickname2);
-                                rankThree.setText("3등:"+userNickname1);
+                                rankThree.setText("1등:"+userNickname1);
 
                             } else if(score2<score&&score<score1) {
-                                rankOne.setText("1등:"+userNickname1);
+                                rankOne.setText("3등:"+userNickname1);
                                 rankTwo.setText("2등:"+userNickname);
-                                rankThree.setText("3등:"+userNickname2);
+                                rankThree.setText("1등:"+userNickname2);
                             } else if(score2<score1&&score1<score) {
-                                rankOne.setText("1등:"+userNickname);
+                                rankOne.setText("3등:"+userNickname);
                                 rankTwo.setText("2등:"+userNickname1);
-                                rankThree.setText("3등:"+userNickname2);
+                                rankThree.setText("1등:"+userNickname2);
                             }
                             linearLank.setVisibility(View.VISIBLE);
 
