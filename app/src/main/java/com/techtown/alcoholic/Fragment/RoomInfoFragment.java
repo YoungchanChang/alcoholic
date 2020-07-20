@@ -80,7 +80,6 @@ public class RoomInfoFragment extends Fragment {
         user3.setVisibility(View.GONE);
         userNickName1.setText(textForQRCode);
 
-
         socketReceiveThread = SocketReceiveThread.getInstance(getString(R.string.server_ip),handler, SingleToneSocket.getInstance());
 
         return  view;
