@@ -128,11 +128,10 @@ public class RoomSearchingActivity extends AppCompatActivity {
                     editor.putString("captainName", barcodeContents);
                     editor.commit();
 
-
                     //barcodeContents의 String값은 방장 이름 값으로 서버에 보내면 된다.
                     userName = pref.getString("userName", "");
                     String request = "joinRoom:"+userName+":"+barcodeContents;
-                    socketReceiveThread.sendData(request);
+                    socketSendThread.sendData(request);
 
                     Intent goHome = new Intent(getApplicationContext(), RoomActivity.class);
                     //user_id를 전달하면 메인홈에서 바로 SELECT문으로 회원정보 가져올 것이다.

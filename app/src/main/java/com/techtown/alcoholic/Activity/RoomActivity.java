@@ -1,19 +1,25 @@
 package com.techtown.alcoholic.Activity;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.EncodeHintType;
@@ -24,6 +30,9 @@ import com.techtown.alcoholic.Fragment.RoomGameListFragment;
 import com.techtown.alcoholic.Fragment.RoomInfoFragment;
 
 import com.techtown.alcoholic.R;
+import com.techtown.alcoholic.SingleToneSocket;
+import com.techtown.alcoholic.SocketReceiveThread;
+import com.techtown.alcoholic.SocketSendThread;
 
 import java.util.Hashtable;
 
@@ -43,6 +52,11 @@ public class RoomActivity extends AppCompatActivity {
     private ImageView imageViewQRCode;
     //QR코드 값 받기
     private String textForQRCode;
+
+    SocketSendThread socketSendThread;
+    SocketReceiveThread socketReceiveThread;
+
+    Handler handler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,6 +93,42 @@ public class RoomActivity extends AppCompatActivity {
         fragmentTransaction.replace(R.id.FrameLayout,roomInfoFragment).commitAllowingStateLoss();
         setFrag(0);
 
+        handler = getHandler();
+        socketReceiveThread = SocketReceiveThread.getInstance(getString(R.string.server_ip),handler, SingleToneSocket.getInstance());
+        socketSendThread = SocketSendThread.getInstance(getString(R.string.server_ip),SingleToneSocket.getInstance());
+
+    }
+
+    @SuppressLint("HandlerLeak")
+    private Handler getHandler() {
+        return new Handler(){
+            @SuppressLint("SetTextI18n")
+            @Override
+            public void handleMessage(@NonNull Message msg) {
+                super.handleMessage(msg);
+                Bundle data = msg.getData();
+                Log.i(TAG, "handleMessage: 데이테 전달받음"+data.toString());
+                switch (data.getString("isFrom")) {
+                    case "receiveThread":
+                        //소켓수신 스레드에서 데이터 받을 때
+                        String value = data.getString("value");
+//                        new JSONArray(value)
+                        Toast.makeText(RoomActivity.this,value,Toast.LENGTH_SHORT).show();
+                        String[] tokens = value.split(":");
+                            switch(tokens[0]){
+                                case "joinRoom":
+                                    String newUserNick = tokens[1];
+
+                                    break;
+
+                        }
+                        break;
+                    default:
+                        Log.i(TAG, "handleMessage: 아무것도 클릭되지 않음");
+                        break;
+                }
+            }
+        };
     }
 
 
