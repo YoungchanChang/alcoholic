@@ -1,19 +1,35 @@
 package com.techtown.alcoholic.Activity;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
+import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.techtown.alcoholic.GameResultDialog;
+import com.techtown.alcoholic.GameResultItem;
 import com.techtown.alcoholic.R;
+import com.techtown.alcoholic.SingleToneSocket;
+import com.techtown.alcoholic.SocketReceiveThread;
+import com.techtown.alcoholic.SocketSendThread;
+import com.techtown.alcoholic.TimerThread;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserFactory;
 
@@ -36,6 +52,16 @@ public class GameInitialSound extends AppCompatActivity {
     ArrayList<String> description = new ArrayList<>();
 
     Random rnd = new Random();
+    Handler handler;
+
+    SocketReceiveThread socketReceiveThread;
+    SocketSendThread socketSendThread;
+    String TAG="GameInitialSound";
+    ArrayList<GameResultItem> gameResultItems = new ArrayList<>();
+
+    Long startTimestamp;
+    Long endTimestamp;
+    DisplayMetrics dm = getApplicationContext().getResources().getDisplayMetrics(); //디바이스 화면크기를 구하기위해
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,6 +85,11 @@ public class GameInitialSound extends AppCompatActivity {
         firstLetter.setText(letter[num]);
         num = rnd.nextInt(letter.length);
         secondLetter.setText(letter[num]);
+
+        handler = getHandler();
+        socketSendThread = socketSendThread.getInstance(getString(R.string.server_ip), SingleToneSocket.getInstance());
+        socketReceiveThread = SocketReceiveThread.getInstance(getString(R.string.server_ip),handler, SingleToneSocket.getInstance());
+
         btnEnter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -72,6 +103,11 @@ public class GameInitialSound extends AppCompatActivity {
 
             }
         });
+    }
+
+    protected void onResume() {
+        super.onResume();
+        startTimestamp = System.currentTimeMillis();
     }
 
 
@@ -97,7 +133,11 @@ public class GameInitialSound extends AppCompatActivity {
                                 textResult.setText("존재하는 단어입니다. 다른 유저를 기다려주세요");
                                 textResultDescription.setText(description.get(1));
                                 btnEnter.setVisibility(View.GONE);
+
                             }
+                            endTimestamp = System.currentTimeMillis();
+                            String request = "gameResult:"+(endTimestamp-startTimestamp);
+                            socketSendThread.sendData(request);
                         }
 
                     }catch(Exception e){e.printStackTrace();}
@@ -181,5 +221,62 @@ public class GameInitialSound extends AppCompatActivity {
         }
 
         return sb.toString();
+    }
+
+
+    @SuppressLint("HandlerLeak")
+    private Handler getHandler() {
+        return new Handler(){
+            @SuppressLint("SetTextI18n")
+            @Override
+            public void handleMessage(@NonNull Message msg) {
+                super.handleMessage(msg);
+                Bundle data = msg.getData();
+                Log.i(TAG, "handleMessage: 데이테 전달받음"+data.toString());
+                switch (data.getString("isFrom")) {
+                    case "receiveThread":
+                        //소켓수신 스레드에서 데이터 받을 때
+                        String value = data.getString("value");
+                        try {
+                            JSONObject jsonObject = new JSONObject(value);
+                            if (jsonObject.length() ==3){
+                                for (int i=0; i<jsonObject.length();i++){
+                                   String token[] = jsonObject.getString(i+"").split(":");
+                                    //token 0 유저 닉네임
+                                    //token 1 결과값
+                                    gameResultItems.add(new GameResultItem(token[0],token[1]));
+
+                                }
+                                showDialog();
+                            }
+
+                        }catch (JSONException e){ e.printStackTrace();}
+
+
+                        //value = "joinRoom:유저닉네임"
+                        break;
+                    default:
+                        Log.i(TAG, "handleMessage: 아무것도 클릭되지 않음");
+                        break;
+                }
+            }
+        };
+    }
+
+    private void showDialog(){
+        final GameResultDialog custom_dialog = new GameResultDialog(getApplicationContext(), gameResultItems);
+        WindowManager.LayoutParams wm = custom_dialog.getWindow().getAttributes();  //다이얼로그의 높이 너비 설정하기위해
+        wm.width = dm.widthPixels / 2;  //화면 너비의 절반
+        wm.height = dm.heightPixels / 2;  //화면 높이의 절반
+        wm.copyFrom(custom_dialog.getWindow().getAttributes());  //여기서 설정한값을 그대로 다이얼로그에 넣겠다는의미
+
+        custom_dialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+            @Override
+            public void onDismiss(DialogInterface dialog) {
+
+               finish();
+            }
+        });
+        custom_dialog.show();
     }
 }
