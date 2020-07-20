@@ -97,6 +97,7 @@ public class GameImageActivity extends AppCompatActivity implements View.OnClick
 
         //값 초기화
         startTime = System.currentTimeMillis();
+        Log.d(TAG, "StartTime "+ startTime);
         handler = getHandler();
         timerThread = new TimerThread(timeLimit, handler);
         timerThread.start();
@@ -202,8 +203,10 @@ public class GameImageActivity extends AppCompatActivity implements View.OnClick
                                         //그리고 10초 완료됬을 시에 데이터를 보내지 않게 해야한다.
                                         endTime = System.currentTimeMillis()- startTime;
                                         isOver = true;
-
-
+                                        textTimeLeft.setVisibility(View.INVISIBLE);
+                                        //TODO
+                                        //데이터를 서버에 보내야 한다.
+                                        Log.d(TAG, "endTime " + endTime);
                                         dismissProgressDialogue();
                                         break;
                                     }else{
@@ -275,6 +278,16 @@ public class GameImageActivity extends AppCompatActivity implements View.OnClick
 
 
 
+
+    //0.
+    //1. 게임 시간이 0이 되면 시간초 관련 데이터를 서버에 보내
+    //2. 특정 조건을 완료하면 데이터를 서버에 보내
+    //2-1. 완료했으면 시간초가 멈춰야되. (멈추는 것 처럼 보여야되)
+    //내가 찍으면 시간초 관련된 뷰가 invisible처리
+    //3. 서버에서 3개의 관련 데이터가 왔을 때 다이얼로그 띄워준다.
+    //0초가 됬을 때는 안 보내져야 한다.
+
+
     //게임 시작 기록하는 변수
     long startTime;
     //게임 끝났을 시간을 기록하는 변수, startTime과의 초가 게임 시간 차이이다.
@@ -305,23 +318,17 @@ public class GameImageActivity extends AppCompatActivity implements View.OnClick
                     case "timerThread":
                         //타이머스레드에서 데이터 받을 때
 
-
+                        Log.d(TAG, "TimeLeft " + timeLimit);
                             if(data.getInt("second")==0) {
                                 textTimeLeft.setText("종료되었습니다");
 
-                                //0.
-                                //1. 게임 시간이 0이 되면 시간초 관련 데이터를 서버에 보내
-                                //2. 특정 조건을 완료하면 데이터를 서버에 보내
-                                //2-1. 완료했으면 시간초가 멈춰야되. (멈추는 것 처럼 보여야되)
-                                //내가 찍으면 시간초 관련된 뷰가 invisible처리
-                                //3. 서버에서 3개의 관련 데이터가 왔을 때 다이얼로그 띄워준다.
-                                //0초가 됬을 때는 안 보내져야 한다.
-
+                                Log.d(TAG, "TimeLeftYet " + timeLimit);
                                 //게임결과 전송
                                 if(!isOver) {
+                                    Log.d(TAG, "TimeLeftEnd " + timeLimit);
                                     //count변수 15초가 흘러간다.
-                                    String request = "gameResult:"+Integer.toString(timeLimit);
-                                    socketSendThread.sendData(request);
+//                                    String request = "gameResult:"+Integer.toString(timeLimit);
+//                                    socketSendThread.sendData(request);
                                 }
 
                             }else {
