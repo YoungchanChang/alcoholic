@@ -55,7 +55,7 @@ public class RoomInfoFragment extends Fragment {
     public void QRFunction(){
 
 
-        textForQRCode = "테스트";
+
 
 
         MultiFormatWriter multiFormatWriter = new MultiFormatWriter();
