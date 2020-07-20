@@ -111,15 +111,8 @@ public class RoomActivity extends AppCompatActivity {
 
     }
 
-
     public void QRFunction(){
 
-        imageViewQRCode = (ImageView)findViewById(R.id.QRCode);
-
-
-        textForQRCode = "테스트";
-
-        Log.d(TAG, "onCreate: ");
         MultiFormatWriter multiFormatWriter = new MultiFormatWriter();
         try{
             /* Encode to utf-8 */
