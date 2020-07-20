@@ -6,7 +6,6 @@
     android:layout_height="match_parent"
     tools:context=".Activity.RoomActivity">
 
-
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -31,7 +30,6 @@
             android:orientation="vertical"
             app:layout_constraintGuide_percent="0.1" />
 
-
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/endPanel"
             android:layout_width="wrap_content"
@@ -42,150 +40,175 @@
         <LinearLayout
             android:id="@+id/LinearLayoutRoomInfo"
             android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_marginBottom="30dp"
-            android:background="@drawable/border2"
-            android:orientation="vertical"
-
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="@id/endPanel"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="@id/topPanel"
             app:layout_constraintStart_toStartOf="@id/startPanel"
-            app:layout_constraintTop_toTopOf="@id/topPanel">
-
+            app:layout_constraintEnd_toEndOf="@id/endPanel"
+            android:background="@drawable/border2"
+            android:orientation="vertical">
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
+                android:text="@string/roomInfo"
                 android:background="@drawable/border_bottom_none"
                 android:backgroundTint="@color/alcoholColor"
-                android:gravity="center"
-                android:text="@string/gameList"
                 android:textColor="#fff"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                android:gravity="center" />
+            <ImageView
+                android:id="@+id/QRCode"
+                android:background="@drawable/border2"
+                android:layout_width="150dp"
+                android:layout_height="150dp"/>
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:id="@+id/linearLayout"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:background="@drawable/border2"
+            android:layout_marginTop="20dp"
+            android:orientation="vertical"
+            android:layout_marginBottom="30dp"
+            app:layout_constraintEnd_toEndOf="@id/endPanel"
+            app:layout_constraintStart_toStartOf="@id/startPanel"
+            app:layout_constraintTop_toBottomOf="@id/LinearLayoutRoomInfo">
 
             <LinearLayout
-                android:id="@+id/gameDictionary"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="40dp"
                 android:orientation="horizontal"
-                android:padding="10dp">
-
-                <ImageView
-                    android:id="@+id/gameImage"
-                    android:layout_width="80dp"
-                    android:layout_height="80dp"
-                    android:background="@android:color/transparent"
-                    android:src="@drawable/dictionary" />
-
+                android:gravity="center"
+                android:background="@drawable/border_bottom_none"
+                android:backgroundTint="@color/alcoholColor">
                 <TextView
-                    android:id="@+id/gameName"
-                    android:layout_width="match_parent"
-                    android:layout_height="80dp"
-                    android:layout_marginStart="30dp"
-                    android:gravity="center_vertical"
-                    android:text="초성게임"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:text="플레이어 "
+                    android:textColor="#fff"
+                    android:textStyle="bold" />
+                <TextView
+                    android:id="@+id/userNumber"
+                    android:layout_width="wrap_content"
+                    android:layout_height="30dp"
+                    android:gravity="top"
+                    android:textColor="#f57f17"
+                    android:textStyle="bold"
                     android:textSize="20sp"
+                    android:layout_marginStart="2dp"
+                    android:text="0"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:text=" 명"
+                    android:textColor="#fff"
                     android:textStyle="bold" />
 
             </LinearLayout>
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="#c2c2c2" />
-
             <LinearLayout
-                android:id="@+id/gameYoutube"
+                android:id="@+id/user1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:padding="10dp">
-
-                <ImageView
-                    android:layout_width="80dp"
-                    android:layout_height="80dp"
-                    android:background="@android:color/transparent"
-                    android:src="@drawable/youtube" />
-
-                <TextView
+                android:padding="10dp"
+                android:orientation="vertical">
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="80dp"
-                    android:layout_marginStart="30dp"
-                    android:gravity="center_vertical"
-                    android:text="높은 조회수를 찾아라"
-                    android:textSize="20sp"
-                    android:textStyle="bold" />
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                    <ImageView
+                        android:src="@drawable/default_user_image"
+                        android:layout_width="60dp"
+                        android:layout_height="60dp"/>
+                    <TextView
+                        android:id="@+id/userNickname1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="60dp"
+                        android:layout_marginStart="30dp"
+                        android:gravity="center"
+                        android:text="닉네임"
+                        android:textStyle="bold"
+                        android:textSize="20sp"/>
+                </LinearLayout>
 
+                <View
+                    android:layout_marginTop="5dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="#000"/>
             </LinearLayout>
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="#c2c2c2" />
-
             <LinearLayout
-                android:id="@+id/gameTenor"
+                android:id="@+id/user2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:padding="10dp">
-
-                <ImageView
-                    android:layout_width="80dp"
-                    android:layout_height="80dp"
-                    android:src="@drawable/tenor" />
-
-                <TextView
+                android:padding="10dp"
+                android:orientation="vertical">
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="80dp"
-                    android:layout_marginStart="30dp"
-                    android:gravity="center_vertical"
-                    android:text="전국물건자랑"
-                    android:textSize="20sp"
-                    android:textStyle="bold" />
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                    <ImageView
+                        android:src="@drawable/default_user_image"
+                        android:layout_width="60dp"
+                        android:layout_height="60dp"/>
+                    <TextView
+                        android:id="@+id/userNickname2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="60dp"
+                        android:layout_marginStart="30dp"
+                        android:gravity="center"
+                        android:text="닉네임"
+                        android:textStyle="bold"
+                        android:textSize="20sp"/>
+                </LinearLayout>
 
+                <View
+                    android:layout_marginTop="5dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="#000"/>
             </LinearLayout>
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="#c2c2c2" />
-
             <LinearLayout
-                android:id="@+id/gameShakeIt"
+                android:id="@+id/user3"
                 android:layout_width="match_parent"
-
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:padding="10dp">
-
-                <ImageView
-                    android:layout_width="80dp"
-                    android:layout_height="80dp"
-                    android:src="@drawable/shakeitshakeit" />
-
-                <TextView
+                android:padding="10dp"
+                android:orientation="vertical">
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="80dp"
-                    android:layout_marginStart="30dp"
-                    android:gravity="center_vertical"
-                    android:text="쉐킷쉐킷"
-                    android:textSize="20sp"
-                    android:textStyle="bold" />
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                    <ImageView
+                        android:src="@drawable/default_user_image"
+                        android:layout_width="60dp"
+                        android:layout_height="60dp"/>
+                    <TextView
+                        android:id="@+id/userNickname3"
+                        android:layout_width="wrap_content"
+                        android:layout_height="60dp"
+                        android:layout_marginStart="30dp"
+                        android:gravity="center"
+                        android:text="닉네임"
+                        android:textStyle="bold"
+                        android:textSize="20sp"/>
+                </LinearLayout>
 
+                <View
+                    android:layout_marginTop="5dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="#000"/>
             </LinearLayout>
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="#c2c2c2" />
-
 
         </LinearLayout>
 
 
+
     </androidx.constraintlayout.widget.ConstraintLayout>
-
-
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/bottom_panel"

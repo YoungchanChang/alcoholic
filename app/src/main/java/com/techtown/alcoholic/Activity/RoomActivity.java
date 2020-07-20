@@ -42,9 +42,6 @@ public class RoomActivity extends AppCompatActivity {
 
     Button btnRoomInfoFragment,btnRoomGameListFragment;
 
-    FragmentManager fragmentManager;
-    FragmentTransaction fragmentTransaction;
-
     RoomGameListFragment roomGameListFragment;
     RoomInfoFragment roomInfoFragment;
     Context context;
@@ -60,33 +57,21 @@ public class RoomActivity extends AppCompatActivity {
 
         context=this;
 
-        fragmentManager = getSupportFragmentManager();
-
         btnRoomGameListFragment= findViewById(R.id.btn_RoomGameListFragment);
         btnRoomInfoFragment = findViewById(R.id.btn_RoomInfoFragment);
-
-
-        fragmentTransaction= fragmentManager.beginTransaction();
 
         btnRoomInfoFragment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                setFrag(0);
+
             }
         });
         btnRoomGameListFragment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                setFrag(1);
+
             }
         });
-
-        roomGameListFragment = new RoomGameListFragment();
-        roomInfoFragment = new RoomInfoFragment();
-
-
-        fragmentTransaction.replace(R.id.FrameLayout,roomInfoFragment).commitAllowingStateLoss();
-        setFrag(0);
 
     }
 
@@ -114,22 +99,5 @@ public class RoomActivity extends AppCompatActivity {
         }catch (Exception e){}
     }
 
-    public void setFrag(int n) {
-        fragmentManager = getSupportFragmentManager();
-        fragmentTransaction = fragmentManager.beginTransaction();
-        switch (n){
-            case 0:
-                fragmentTransaction.replace(R.id.FrameLayout,roomInfoFragment);
-                fragmentTransaction.commit();
-                break;
-            case 1:
-                    fragmentTransaction.replace(R.id.FrameLayout,roomGameListFragment);
-
-                fragmentTransaction.commit();
-                break;
-
-        }
-
-    }
 
 }
