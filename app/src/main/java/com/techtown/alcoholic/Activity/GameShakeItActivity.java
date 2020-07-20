@@ -130,7 +130,7 @@ public class GameShakeItActivity extends AppCompatActivity implements SensorEven
                             textTimeLeft.setText("종료되었습니다");
                             mSensorManager.unregisterListener(GameShakeItActivity.this);
                             //게임결과 전송
-                            String request = "game:shakeIt:"+userNick+":"+count;
+                            String request = "gameResult:"+count;
                             socketSendThread.sendData(request);
                         }else {
                             textTimeLeft.setText(data.getInt("second")+"초 남았습니다");

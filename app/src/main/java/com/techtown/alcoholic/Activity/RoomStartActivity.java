@@ -86,7 +86,7 @@ public class RoomStartActivity extends AppCompatActivity implements AutoPermissi
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.btnShakeIt:
-                String requestShakeIt = "gameStart:"+editTextRoomName.getText().toString()+":"+"shakeIt";
+                String requestShakeIt = "gameStart:shakeIt";
                 socketSendThread.sendData(requestShakeIt);
                 break;
             case R.id.btnImageGame:
