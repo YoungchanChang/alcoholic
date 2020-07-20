@@ -21,6 +21,8 @@ public class RoomStart2Activity extends AppCompatActivity implements View.OnClic
 
     ImageView image_gif;
     ImageButton imageMakeRoom;
+    ImageButton imageFindRoom;
+
 
     AlertDialog.Builder ad;
 
@@ -35,7 +37,7 @@ public class RoomStart2Activity extends AppCompatActivity implements View.OnClic
         imageMakeRoom = findViewById(R.id.imageMakeRoom);
         imageMakeRoom.setOnClickListener(this);
 
-
+        imageFindRoom = findViewById(R.id.imageFindRoom);
 
 
 
