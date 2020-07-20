@@ -156,5 +156,4 @@ public class RoomStartActivity extends AppCompatActivity implements AutoPermissi
             }
         };
     }
-
 }
