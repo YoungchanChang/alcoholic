@@ -45,7 +45,12 @@ public class SocketSendThread extends Thread {
             isConnected = connectSocket();
             //연결되어있으면
             if(dataList.size()!=0) {
-                pw.println(dataList.remove(0));
+                try{
+                    pw.println(dataList.remove(0));
+                }catch (Exception e) {
+                    Log.e(TAG, "run: 소켓 메세지 전달 오류", e);
+                }
+
             }
         }
     }
@@ -75,6 +80,7 @@ public class SocketSendThread extends Thread {
     }
 
     public void sendData(String data) {
+        Log.e(TAG, "sendData: "+data);
         //"~:~:~"형태의 데이터
         dataList.add(data);
     }

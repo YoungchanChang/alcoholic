@@ -147,6 +147,7 @@ public class RoomActivity extends AppCompatActivity {
                 Log.i(TAG, "handleMessage: 데이테 전달받음"+data.getString("isFrom"));
                 switch (data.getString("isFrom")) {
                     case "receiveThread":
+                        Log.e(TAG, "handleMessage: 이건되나 ");
                         //소켓수신 스레드에서 데이터 받을 때
                         String value = data.getString("value");
                         Log.i(TAG, "handleMessage!!! "+value);

@@ -57,6 +57,7 @@ public class GameReadyActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 String request = "gameStart:"+games[gameGenre-1];
+                Log.e(TAG, "onClick: "+request);
                 socketSendThread.sendData(request);
             }
         });

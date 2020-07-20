@@ -15,11 +15,17 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.techtown.alcoholic.R;
+import com.techtown.alcoholic.SocketReceiveThread;
+import com.techtown.alcoholic.SocketSendThread;
 
 public class RoomGameList2Activity extends AppCompatActivity {
     LinearLayout gameDictionary,gameYoutube,gameShakeIt,gameTenor;
 
     Button btnRoomInfoFragment,btnRoomGameListFragment;
+
+    Handler handler;
+    SocketSendThread socketSendThread;
+    SocketReceiveThread socketReceiveThread;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

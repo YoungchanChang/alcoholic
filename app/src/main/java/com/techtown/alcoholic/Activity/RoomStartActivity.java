@@ -92,17 +92,16 @@ public class RoomStartActivity extends AppCompatActivity implements AutoPermissi
                 socketSendThread.sendData(requestShakeIt);
                 break;
             case R.id.btnImageGame:
-                Intent intent2 = new Intent(RoomStartActivity.this,GameImageActivity.class);
-                startActivity(intent2);
-                Log.d(TAG, "onClick: ");
+                String requestImageGame = "gameStart:imageGame";
+                socketSendThread.sendData(requestImageGame);
                 break;
             case R.id.btnInitialSound:
-                Intent intent3 = new Intent(RoomStartActivity.this,GameInitialSound.class);
-                startActivity(intent3);
+                String requestInitialSound = "gameStart:initialSound";
+                socketSendThread.sendData(requestInitialSound);
                 break;
             case R.id.btnYoutubeViews:
-                Intent intent4 = new Intent(RoomStartActivity.this,GameYoutubeViewsActivity.class);
-                startActivity(intent4);
+                String requestYoutubeViews = "gameStart:youtubeViews";
+                socketSendThread.sendData(requestYoutubeViews);
                 break;
             case R.id.basicFirst:
                 Intent intent7 = new Intent(RoomStartActivity.this,RoomStart2Activity.class);
@@ -138,7 +137,7 @@ public class RoomStartActivity extends AppCompatActivity implements AutoPermissi
             public void handleMessage(@NonNull Message msg) {
                 super.handleMessage(msg);
                 Bundle data = msg.getData();
-                Log.i(TAG, "handleMessage: 데이테 전달받음"+data.toString());
+                Log.i(TAG, "handleMessage: 데이테 전달받음2222222"+data.toString());
                 switch (data.getString("isFrom")) {
                     case "receiveThread":
                         //소켓수신 스레드에서 데이터 받을 때
@@ -151,6 +150,18 @@ public class RoomStartActivity extends AppCompatActivity implements AutoPermissi
                                 case "shakeIt" :
                                     Intent intent = new Intent(RoomStartActivity.this,GameShakeItActivity.class);
                                     startActivity(intent);
+                                    break;
+                                case "initialSound" :
+                                    Intent intent2 = new Intent(RoomStartActivity.this,GameInitialSound.class);
+                                    startActivity(intent2);
+                                    break;
+                                case "imageGame":
+                                    Intent intent3 = new Intent(RoomStartActivity.this,GameImageActivity.class);
+                                    startActivity(intent3);
+                                    break;
+                                case "youtubeViews":
+                                    Intent intent4 = new Intent(RoomStartActivity.this,GameYoutubeViewsActivity.class);
+                                    startActivity(intent4);
                                     break;
                             }
                         }

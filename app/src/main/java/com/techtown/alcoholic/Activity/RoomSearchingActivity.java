@@ -143,9 +143,6 @@ public class RoomSearchingActivity extends AppCompatActivity {
                     startActivity(goHome);
                 }
 
-
-
-
             }
         });
 
