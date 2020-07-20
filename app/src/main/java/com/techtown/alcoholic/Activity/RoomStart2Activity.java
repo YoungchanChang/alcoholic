@@ -1,21 +1,31 @@
 package com.techtown.alcoholic.Activity;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.techtown.alcoholic.R;
 import com.bumptech.glide.Glide;
+import com.techtown.alcoholic.SingleToneSocket;
+import com.techtown.alcoholic.SocketReceiveThread;
+import com.techtown.alcoholic.SocketSendThread;
+import com.techtown.alcoholic.TimerThread;
+
 public class RoomStart2Activity extends AppCompatActivity implements View.OnClickListener{
     private static final String TAG = "RoomStart";
 
@@ -27,6 +37,13 @@ public class RoomStart2Activity extends AppCompatActivity implements View.OnClic
     AlertDialog.Builder ad;
 
     AlertDialog.Builder adFindRoom;
+
+    Handler handler;
+
+    SocketReceiveThread socketReceiveThread;
+    SocketSendThread socketSendThread;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,8 +58,11 @@ public class RoomStart2Activity extends AppCompatActivity implements View.OnClic
         imageFindRoom = findViewById(R.id.imageFindRoom);
         imageFindRoom.setOnClickListener(this);
 
+        //핸들러와 소켓통신 스레드
+        handler = getHandler();
 
-
+        socketSendThread = socketSendThread.getInstance(getString(R.string.server_ip), SingleToneSocket.getInstance());
+        socketReceiveThread = SocketReceiveThread.getInstance(getString(R.string.server_ip),handler, SingleToneSocket.getInstance());
 
     }
 
@@ -60,6 +80,34 @@ public class RoomStart2Activity extends AppCompatActivity implements View.OnClic
 
                 break;
         }
+    }
+
+    @SuppressLint("HandlerLeak")
+    private Handler getHandler() {
+        return new Handler(){
+            @SuppressLint("SetTextI18n")
+            @Override
+            public void handleMessage(@NonNull Message msg) {
+                super.handleMessage(msg);
+                Bundle data = msg.getData();
+                Log.i(TAG, "handleMessage: 데이터 전달받음"+data.toString());
+                switch (data.getString("isFrom")) {
+                    case "receiveThread":
+                        //소켓수신 스레드에서 데이터 받을 때
+                        String value = data.getString("value");
+                        Toast.makeText(RoomStart2Activity.this,value,Toast.LENGTH_SHORT).show();
+                        if("makeRoom".equals(value)) {
+                            //방 생성완료 시에
+                            Intent intent = new Intent(RoomStart2Activity.this,RoomActivity.class);
+                            startActivity(intent);
+                        }
+                        break;
+                    default:
+                        Log.i(TAG, "handleMessage: isFrom오류");
+                        break;
+                }
+            }
+        };
     }
 
     public void showDialogue(){
@@ -94,15 +142,14 @@ public class RoomStart2Activity extends AppCompatActivity implements View.OnClic
                 editor.commit();
 
                 //value값이 captain
+                String request = "makeRoom:"+value;
+                socketSendThread.sendData(request);
 
                 Intent goHome = new Intent(getApplicationContext(), RoomActivity.class);
                 //user_id를 전달하면 메인홈에서 바로 SELECT문으로 회원정보 가져올 것이다.
                 startActivity(goHome);
                 finish();
                 dialog.dismiss();     //닫기
-
-
-
 
             }
         });

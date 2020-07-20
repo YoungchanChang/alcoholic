@@ -1,35 +1,52 @@
 package com.techtown.alcoholic.Activity;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.util.Log;
 import android.util.SparseArray;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.google.android.gms.vision.CameraSource;
 import com.google.android.gms.vision.Detector;
 import com.google.android.gms.vision.barcode.Barcode;
 import com.google.android.gms.vision.barcode.BarcodeDetector;
 import com.techtown.alcoholic.R;
+import com.techtown.alcoholic.SingleToneSocket;
+import com.techtown.alcoholic.SocketReceiveThread;
+import com.techtown.alcoholic.SocketSendThread;
 
 import java.io.IOException;
 
 public class RoomSearchingActivity extends AppCompatActivity {
+    static final String TAG="방탐색 액티비티";
 
     CameraSource cameraSource;
     SurfaceView cameraSurface;
     Button btn_cancel;
     String barcodeContents;
+
+    Handler handler;
+
+    SocketReceiveThread socketReceiveThread;
+    SocketSendThread socketSendThread;
+
+    String userName = "";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -113,9 +130,9 @@ public class RoomSearchingActivity extends AppCompatActivity {
 
 
                     //barcodeContents의 String값은 방장 이름 값으로 서버에 보내면 된다.
-                    String userName = pref.getString("userName", "");
-
-
+                    userName = pref.getString("userName", "");
+                    String request = "joinRoom:"+userName+":"+barcodeContents;
+                    socketReceiveThread.sendData(request);
 
                     Intent goHome = new Intent(getApplicationContext(), RoomActivity.class);
                     //user_id를 전달하면 메인홈에서 바로 SELECT문으로 회원정보 가져올 것이다.
@@ -128,10 +145,38 @@ public class RoomSearchingActivity extends AppCompatActivity {
             }
         });
 
+        handler = getHandler();
 
-
-
-
+        socketSendThread = socketSendThread.getInstance(getString(R.string.server_ip), SingleToneSocket.getInstance());
+        socketReceiveThread = SocketReceiveThread.getInstance(getString(R.string.server_ip),handler, SingleToneSocket.getInstance());
     }
 
+    @SuppressLint("HandlerLeak")
+    private Handler getHandler() {
+        return new Handler(){
+            @SuppressLint("SetTextI18n")
+            @Override
+            public void handleMessage(@NonNull Message msg) {
+                super.handleMessage(msg);
+                Bundle data = msg.getData();
+                Log.i(TAG, "handleMessage: 데이터 전달받음"+data.toString());
+                switch (data.getString("isFrom")) {
+                    case "receiveThread":
+                        //소켓수신 스레드에서 데이터 받을 때
+                        String value = data.getString("value");
+                        Toast.makeText(RoomSearchingActivity.this,value,Toast.LENGTH_SHORT).show();
+                        String[] tokens = value.split(":");
+                        if("joinRoom".equals(tokens[0])&&userName.equals(tokens[1])) {
+                            //방 생성완료 시에
+                            Intent intent = new Intent(RoomSearchingActivity.this,RoomActivity.class);
+                            startActivity(intent);
+                        }
+                        break;
+                    default:
+                        Log.i(TAG, "handleMessage: isFrom오류");
+                        break;
+                }
+            }
+        };
+    }
 }
