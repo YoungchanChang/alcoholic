@@ -130,27 +130,33 @@ public class RoomActivity extends AppCompatActivity {
             @SuppressLint("SetTextI18n")
             @Override
             public void handleMessage(@NonNull Message msg) {
+
                 super.handleMessage(msg);
-                Bundle data = msg.getData();
-                Log.i(TAG, "handleMessage: 데이테 전달받음"+data.toString());
-                switch (data.getString("isFrom")) {
-                    case "receiveThread":
-                        //소켓수신 스레드에서 데이터 받을 때
-                        String value = data.getString("value");
-                        String token[] =value.split(":");
-                        if (token[0].equals("joinRoom")){
-                            for (int i =1; i<token.length;i++){
-                                joinRoom(i,token[i]);
+                try{
+                    Bundle data = msg.getData();
+                    switch (data.getString("isFrom")) {
+                        case "receiveThread":
+                            //소켓수신 스레드에서 데이터 받을 때
+                            String value = data.getString("value");
+                            String token[] =value.split(":");
+                            if (token[0].equals("joinRoom")){
+                                for (int i =1; i<token.length;i++){
+                                    joinRoom(i,token[i]);
+                                }
                             }
-                        }
-                        break;
-                    default:
-                        Log.i(TAG, "handleMessage: 아무것도 클릭되지 않음");
-                        break;
+                            break;
+                        default:
+                            Log.i(TAG, "handleMessage: 아무것도 클릭되지 않음");
+                            break;
+                    }
+                }catch (Exception e ) {
+                    Log.e(TAG, "handleMessage: ", e);
                 }
+
             }
         };
     }
+
     private void joinRoom(int index,String userName){
         switch (index){
             case 1:
