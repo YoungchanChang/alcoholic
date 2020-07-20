@@ -28,8 +28,6 @@ import com.google.zxing.EncodeHintType;
 import com.google.zxing.MultiFormatWriter;
 import com.google.zxing.common.BitMatrix;
 import com.journeyapps.barcodescanner.BarcodeEncoder;
-import com.techtown.alcoholic.Fragment.RoomGameListFragment;
-import com.techtown.alcoholic.Fragment.RoomInfoFragment;
 
 import com.techtown.alcoholic.R;
 import com.techtown.alcoholic.SingleToneSocket;
@@ -44,8 +42,6 @@ public class RoomActivity extends AppCompatActivity {
 
     Button btnRoomInfoFragment,btnRoomGameListFragment;
 
-    RoomGameListFragment roomGameListFragment;
-    RoomInfoFragment roomInfoFragment;
     Context context;
     //QR코드가 보여질 이미지 부분
     private ImageView imageViewQRCode;
