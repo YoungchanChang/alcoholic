@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,24 +18,24 @@ import com.techtown.alcoholic.Activity.GameReadyActivity;
 import com.techtown.alcoholic.R;
 
 
-public class RoomGameListFragment extends Fragment {
+public class RoomGameListActivity extends AppCompatActivity {
 
     View view;
     Context mContext;
     LinearLayout gameDictionary,gameYoutube,gameShakeIt,gameTenor;
 
 
-    @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
 
-        view = inflater.inflate(R.layout.fragment_room_game_list,container,false);
-        mContext=getActivity();
 
-        gameDictionary= view.findViewById(R.id.gameDictionary);
-        gameYoutube= view.findViewById(R.id.gameYoutube);
-        gameTenor= view.findViewById(R.id.gameTenor);
-        gameShakeIt= view.findViewById(R.id.gameShakeIt);
+
+
+    gameDictionary= findViewById(R.id.gameDictionary);
+        gameYoutube= findViewById(R.id.gameYoutube);
+        gameTenor= findViewById(R.id.gameTenor);
+        gameShakeIt= findViewById(R.id.gameShakeIt);
 
         gameDictionary.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -66,6 +67,6 @@ public class RoomGameListFragment extends Fragment {
             }
         });
 
-        return  view;
+
     }
 }

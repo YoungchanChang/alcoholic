@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:background="@color/backgroundColor"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".Fragment.RoomGameListFragment">
+    tools:context=".Fragment.RoomGameListActivity">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -57,6 +57,7 @@
                 android:textStyle="bold" />
             <LinearLayout
                 android:id="@+id/gameDictionary"
+                android:clickable="true"
                 android:padding="10dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -85,6 +86,7 @@
                 android:background="#c2c2c2"/>
             <LinearLayout
                 android:id="@+id/gameYoutube"
+                android:clickable="true"
                 android:padding="10dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -110,6 +112,7 @@
                 android:layout_height="1dp"
                 android:background="#c2c2c2"/>
             <LinearLayout
+                android:clickable="true"
                 android:id="@+id/gameTenor"
                 android:padding="10dp"
                 android:layout_width="match_parent"
@@ -137,7 +140,7 @@
             <LinearLayout
                 android:id="@+id/gameShakeIt"
                 android:padding="10dp"
-
+                android:clickable="true"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
