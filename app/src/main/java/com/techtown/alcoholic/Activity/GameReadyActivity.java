@@ -34,6 +34,9 @@ public class GameReadyActivity extends AppCompatActivity {
         Intent get_intent = getIntent();
         Integer gameGenre = get_intent.getIntExtra("gameGenre", 1);
 
+
+        //버튼 클릭시 -> 특정 정보 서버에게 보내지면
+        //쓰레드로
         switch (gameGenre){
             case 1:
                 imageName.setImageDrawable(getResources().getDrawable(R.drawable.dictionary, getApplicationContext().getTheme()));

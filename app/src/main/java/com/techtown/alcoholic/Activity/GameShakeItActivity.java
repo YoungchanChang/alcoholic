@@ -140,7 +140,7 @@ public class GameShakeItActivity extends AppCompatActivity implements SensorEven
                         //소켓수신 스레드에서 데이터 받을 때
                         String value = data.getString("value");
 //                        new JSONArray(value)
-                        Toast.makeText(GameShakeItActivity.this,value,Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(GameShakeItActivity.this,value,Toast.LENGTH_SHORT).show();
                         break;
                     default:
                         Log.i(TAG, "handleMessage: 아무것도 클릭되지 않음");
