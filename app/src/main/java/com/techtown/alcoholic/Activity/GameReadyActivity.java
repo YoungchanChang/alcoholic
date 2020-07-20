@@ -1,17 +1,28 @@
 package com.techtown.alcoholic.Activity;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.techtown.alcoholic.R;
+import com.techtown.alcoholic.SingleToneSocket;
+import com.techtown.alcoholic.SocketReceiveThread;
+import com.techtown.alcoholic.SocketSendThread;
 
 public class GameReadyActivity extends AppCompatActivity {
+    private static final String TAG ="게임준비 액티비티";
+    private static final String[] games = {"initialSound","youtubeView","imageGame","shakeIt"};
 
     Button btnBack;
     Button btnStart;
@@ -20,6 +31,10 @@ public class GameReadyActivity extends AppCompatActivity {
     ImageView imageName;
     TextView textTitle;
     TextView textExplain;
+
+    Handler handler;
+    SocketSendThread socketSendThread;
+    SocketReceiveThread socketReceiveThread;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,7 +47,19 @@ public class GameReadyActivity extends AppCompatActivity {
         btnStart = findViewById(R.id.btnStart);
 
         Intent get_intent = getIntent();
-        Integer gameGenre = get_intent.getIntExtra("gameGenre", 1);
+        final Integer gameGenre = get_intent.getIntExtra("gameGenre", 1);
+
+        handler = getHandler();
+        socketReceiveThread = SocketReceiveThread.getInstance(getString(R.string.server_ip),handler, SingleToneSocket.getInstance());
+        socketSendThread = socketSendThread.getInstance(getString(R.string.server_ip), SingleToneSocket.getInstance());
+
+        btnStart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String request = "gameStart:"+games[gameGenre-1];
+                socketSendThread.sendData(request);
+            }
+        });
 
 
         //TODO
@@ -52,7 +79,6 @@ public class GameReadyActivity extends AppCompatActivity {
                         Intent goGame = new Intent(getApplicationContext(), GameInitialSound.class);
                         startActivity(goGame);
                         finish();
-
                     }
                 });
                  break;
@@ -67,11 +93,8 @@ public class GameReadyActivity extends AppCompatActivity {
                         Intent goGame2 = new Intent(getApplicationContext(), GameYoutubeViewsActivity.class);
                         startActivity(goGame2);
                         finish();
-
                     }
                 });
-
-
                 break;
             case 3:
                 imageName.setImageDrawable(getResources().getDrawable(R.drawable.search_icon, getApplicationContext().getTheme()));
@@ -108,7 +131,46 @@ public class GameReadyActivity extends AppCompatActivity {
             default :
                 break;
         }
+    }
+    @SuppressLint("HandlerLeak")
+    private Handler getHandler() {
+        return new Handler(){
+            @Override
+            public void handleMessage(@NonNull Message msg) {
+                super.handleMessage(msg);
+                Bundle data = msg.getData();
+                Log.i(TAG, "handleMessage: 데이테 전달받음"+data.toString());
 
+                String value = data.getString("value");
 
+                String[] tokens = value.split(":");
+                if("gameStart".equals(tokens[0])) {
+                    switch(tokens[1]){
+                        //초성게임
+                        case "initialSound" :
+                            Intent intent1 = new Intent(GameReadyActivity.this,GameInitialSound.class);
+                            startActivity(intent1);
+                            break;
+                            //유튜브게임
+                        case "youtubeView":
+                            Intent intent2 = new Intent(GameReadyActivity.this,GameYoutubeViewsActivity.class);
+                            startActivity(intent2);
+                            break;
+                            //전국물건자랑
+                        case "imageGame":
+                            Intent intent3 = new Intent(GameReadyActivity.this,GameImageActivity.class);
+                            startActivity(intent3);
+                            break;
+                            //쉐킷쉐킷
+                        case"shakeIt":
+                            Intent intent4 = new Intent(GameReadyActivity.this,GameShakeItActivity.class);
+                            startActivity(intent4);
+                            break;
+                        default:
+                            throw new IllegalStateException("Unexpected value: " + tokens[1]);
+                    }
+                }
+            }
+        };
     }
 }

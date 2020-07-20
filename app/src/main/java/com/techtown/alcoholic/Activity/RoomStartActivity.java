@@ -23,7 +23,7 @@ import com.techtown.alcoholic.SocketSendThread;
 
 public class RoomStartActivity extends AppCompatActivity implements AutoPermissionsListener, View.OnClickListener {
     private static final String TAG = "GameLog";
-    Button btnShakeIt;
+    Button btnShakeIt,btnReadyGame;
     Button btnImageGame,btnInitialSound,btnYoutube;
     //방만들기, 방찾기 버튼
     Button btnMakeRoom, basicFirst;
@@ -54,6 +54,8 @@ public class RoomStartActivity extends AppCompatActivity implements AutoPermissi
         btnSearchingRoom.setOnClickListener(this);
         editTextNickname = findViewById(R.id.editTextNickname);
         editTextRoomName = findViewById(R.id.editTextRoomName);
+        btnReadyGame = findViewById(R.id.btnReadyGame);
+        btnReadyGame.setOnClickListener(this);
 
         basicFirst= findViewById(R.id.basicFirst);
         basicFirst.setOnClickListener(this);
@@ -118,6 +120,10 @@ public class RoomStartActivity extends AppCompatActivity implements AutoPermissi
                     String request = "joinRoom:"+editTextNickname.getText().toString()+":"+editTextRoomName.getText().toString();
                     socketSendThread.sendData(request);
                 }
+                break;
+            case R.id.btnReadyGame:
+                Intent intent8 = new Intent(RoomStartActivity.this,GameReadyActivity.class);
+                startActivity(intent8);
                 break;
             default:
                 Log.d(TAG, "defaultTest");
