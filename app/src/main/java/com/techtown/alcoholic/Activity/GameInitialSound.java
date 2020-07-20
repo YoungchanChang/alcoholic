@@ -46,7 +46,7 @@ import java.util.Random;
 public class GameInitialSound extends AppCompatActivity {
 
     EditText enterWord;
-    TextView textResult,textResultDescription,firstLetter,secondLetter;
+    TextView textResult,textResultDescription,firstLetter,secondLetter,textRank;
     Button btnEnter;
     ArrayList<String> title = new ArrayList<>();
     ArrayList<String> description = new ArrayList<>();
@@ -57,12 +57,14 @@ public class GameInitialSound extends AppCompatActivity {
     SocketReceiveThread socketReceiveThread;
     SocketSendThread socketSendThread;
     String TAG="GameInitialSound";
+    String rank;
     ArrayList<GameResultItem> gameResultItems = new ArrayList<>();
 
     Long startTimestamp;
     Long endTimestamp;
 //
     DisplayMetrics dm;
+    Boolean sendDate =true;
     //0.
     //1. 게임 시간이 0이 되면 시간초 관련 데이터를 서버에 보내
     //2. 특정 조건을 완료하면 데이터를 서버에 보내
@@ -99,7 +101,7 @@ public class GameInitialSound extends AppCompatActivity {
 
 
 
-
+        textRank = findViewById(R.id.rank);
         firstLetter = findViewById(R.id.firstInitialLetter);
         secondLetter = findViewById(R.id.secondInitialLetter);
         textResultDescription = findViewById(R.id.textResultDescription);
@@ -172,10 +174,12 @@ public class GameInitialSound extends AppCompatActivity {
                                 btnEnter.setVisibility(View.GONE);
 
                             }
-
+                            textTimeLeft.setVisibility(View.INVISIBLE);
                             endTimestamp = System.currentTimeMillis();
                             String request = "gameResult:"+(endTimestamp-startTimestamp);
                             socketSendThread.sendData(request);
+                            textTimeLeft.setVisibility(View.INVISIBLE);
+                            sendDate =false;
                         }
 
                     }catch(Exception e){e.printStackTrace();}
@@ -275,17 +279,49 @@ public class GameInitialSound extends AppCompatActivity {
                     case "receiveThread":
                         //소켓수신 스레드에서 데이터 받을 때
                         String value = data.getString("value");
-                        try {
-                            JSONObject jsonObject = new JSONObject(value);
-                                for (int i=0; i<jsonObject.length();i++){
-                                   String token[] = jsonObject.getString(i+"").split(":");
-                                    //token 0 유저 닉네임
-                                    //token 1 결과값
-                                    gameResultItems.add(new GameResultItem(token[0],token[1]));
+                        Log.d("스위치","스위치 작동");
+
+                            try {
+                                JSONObject jsonObject = new JSONObject(value);
+
+                                String token[] = jsonObject.getString(0+"").split(":");
+                                String token1[] = jsonObject.getString(1+"").split(":");
+                                String token2[] = jsonObject.getString(2+"").split(":");
+                                //token 0 유저 닉네임
+                                //token 1 결과값
+
+                                String userNickname = token[0];
+                                String userScore = token[1];
+                                long score = Integer.parseInt(userScore);
+                                String userNickname1 = token1[0];
+                                String userScore1 = token1[1];
+                                long score1 = Integer.parseInt(userScore1);
+                                String userNickname2 = token2[0];
+                                String userScore2 = token2[1];
+                                long score2 = Integer.parseInt(userScore2);
+
+                                if(score<score1&&score1<score2) {
+
+                                    rank ="1등:"+userNickname2+" 2등:"+userNickname1+" 3등:"+userNickname1;
+                                } else if(score<score2&&score2<score1) {
+
+                                    rank ="1등:"+userNickname1+" 2등:"+userNickname2+" 3등:"+userNickname;
+                                } else if(score1<score&&score<score2) {
+
+                                    rank= "1등:"+userNickname2+" 2등:"+userNickname+" 3등:"+userNickname1;
+                                } else if(score1<score2&&score2<score) {
+
+                                    rank="1등:"+userNickname+" 2등:"+userNickname2+" 3등:"+userNickname1;
+                                } else if(score2<score&&score<score1) {
+
+                                    rank="1등:"+userNickname1+" 2등:"+userNickname+" 3등:"+userNickname2;
+                                } else if(score2<score1&&score1<score) {
+
+                                    rank= "1등:" + userNickname + " 2등:" + userNickname1 + " 3등:" + userNickname2;
+                                }
 
 
-
-                            }
+                                //결과값 보여줌
 
                         }catch (JSONException e){ e.printStackTrace();}
 
@@ -301,13 +337,16 @@ public class GameInitialSound extends AppCompatActivity {
 
                             Log.d(TAG, "TimeLeftYet " + timeLimit);
                             //게임결과 전송
-                            if(!isOver) {
+
                                 Log.d(TAG, "TimeLeftEnd " + timeLimit);
                                 //count변수 15초가 흘러간다.
                                 //TODO
-//                                    String request = "gameResult:"+Integer.toString(timeLimit);
-//                                    socketSendThread.sendData(request);
-                            }
+                                if (sendDate){
+                                    endTimestamp = System.currentTimeMillis();
+                                    String request = "gameResult:"+(endTimestamp-startTimestamp);
+                                    socketSendThread.sendData(request);
+                                }
+
 
                         }else {
                             textTimeLeft.setText(data.getInt("second")+"초 남았습니다");
@@ -337,7 +376,7 @@ public class GameInitialSound extends AppCompatActivity {
                finish();
             }
         });
-        custom_dialog.show();
+//        custom_dialog.show();
     }
 
 

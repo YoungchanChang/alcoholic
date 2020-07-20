@@ -106,4 +106,15 @@
         android:orientation="horizontal"
         app:layout_constraintGuide_percent="0.17" />
 
+    <TextView
+        android:visibility="invisible"
+        android:background="@drawable/border2"
+        android:backgroundTint="@color/alcoholColorLight"
+        android:layout_width="300dp"
+        android:layout_height="300dp"
+        android:id="@+id/rank"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -65,6 +65,8 @@
                 android:textStyle="bold" />
 
             <LinearLayout
+                android:clickable="true"
+                android:focusable="true"
                 android:id="@+id/gameDictionary"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -96,6 +98,8 @@
                 android:background="#c2c2c2" />
 
             <LinearLayout
+                android:clickable="true"
+                android:focusable="true"
                 android:id="@+id/gameYoutube"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -125,6 +129,8 @@
                 android:background="#c2c2c2" />
 
             <LinearLayout
+                android:clickable="true"
+                android:focusable="true"
                 android:id="@+id/gameTenor"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -155,7 +161,8 @@
             <LinearLayout
                 android:id="@+id/gameShakeIt"
                 android:layout_width="match_parent"
-
+                android:clickable="true"
+                android:focusable="true"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:padding="10dp">

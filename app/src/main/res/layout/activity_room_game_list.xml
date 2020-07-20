@@ -58,7 +58,6 @@
             <LinearLayout
                 android:id="@+id/gameDictionary"
                 android:focusable="true"
-
                 android:clickable="true"
                 android:padding="10dp"
                 android:layout_width="match_parent"

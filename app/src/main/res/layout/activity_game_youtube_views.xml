@@ -131,4 +131,48 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+
+    <LinearLayout
+        android:visibility="invisible"
+        android:background="@drawable/border2"
+        android:backgroundTint="@color/alcoholColorLight"
+        android:layout_width="300dp"
+        android:layout_height="200dp"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:id="@+id/LinearRank"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent">
+    <TextView
+        android:id="@+id/rankOne"
+        android:gravity="center"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:layout_marginBottom="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="1등"/>
+        <TextView
+            android:id="@+id/rankTwo"
+            android:gravity="center"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="2등"/>
+        <TextView
+            android:id="@+id/rankThree"
+            android:gravity="center"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="10dp"
+
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="3등"/>
+    </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
