@@ -388,7 +388,6 @@ public class GameImageActivity extends AppCompatActivity implements View.OnClick
                                 rankOne.setText("1등:"+userNickname);
                                 rankTwo.setText("2등:"+userNickname2);
                                 rankThree.setText("3등:"+userNickname1);
-
                             } else if(score2<score&&score<score1) {
                                 rankOne.setText("1등:"+userNickname1);
                                 rankTwo.setText("2등:"+userNickname);
