@@ -39,9 +39,9 @@ public class HTTPRequest {
 
     private HTTPRequest() {
     }
-    String my_domain = "https://youngchanserver.tk/";
+    String my_domain = "https://www.googleapis.com/youtube/v3/videos?id=";
     String specific_URI = "";
-
+    String plus = "&key=AIzaSyCXWxnu_c0IF-koLZm_wE5M6b5TKRIsGVc&part=statistics&fields=items(statistics(viewCount))";
     public void setHttpProperty(Activity context, Response.Listener<String> response_listener){
         this.context = context;
         this.response_listener = response_listener;
@@ -59,9 +59,9 @@ public class HTTPRequest {
 
     public void makeRequest() {
         Log.d(TAG, "makeRequest: 시작점");
-        String url = my_domain+ specific_URI;
+        String url = my_domain+ specific_URI + plus;
         StringRequest request = new StringRequest(
-                Request.Method.POST,
+                Request.Method.GET,
                 url,
                 response_listener,
                 new Response.ErrorListener() {
@@ -87,34 +87,5 @@ public class HTTPRequest {
         requestQueue.add(request);
     }
 
-
-//    public void forActivity(){
-//
-//        Response.Listener<String> response_listener =  new Response.Listener<String>(){
-//            @Override
-//            public void onResponse(String response) {
-//
-//                //뷰에 반영한다.
-//                runOnUiThread(new Runnable() {
-//                    @Override
-//                    public void run() {
-//
-//
-//                    }
-//                });
-//            }
-//        };
-//
-//        //서버에 보낼 파라미터를 설정한다.
-//        Map<String,String> params = new HashMap<String,String>();
-//        params.put("user_phone", "param");
-//        SingletonNewHttp.getInstance().putParams(params);
-//        //서버에 보낼 목적지 URI를 설정한다.
-//        SingletonNewHttp.getInstance().putURI(SingletonNewHttp.USER_FIND);
-//        //성공시 처리한다.
-//        SingletonNewHttp.getInstance().setHttpProperty(AcitivityBlank.this, response_listener);
-//
-//        SingletonNewHttp.getInstance().makeRequest();
-//    }
 
 }

@@ -13,14 +13,41 @@
         android:orientation="horizontal"
         app:layout_constraintGuide_percent="0.17" />
 
-    <TextView
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="키워드를 포함한 검색어를 입력해주세요"
+        android:orientation="horizontal"
         app:layout_constraintTop_toTopOf="@id/topPanel"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:textSize="20sp"/>
+        app:layout_constraintEnd_toEndOf="parent">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="키워드["
+            app:layout_constraintTop_toTopOf="@id/topPanel"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:textSize="17sp"/>
+        <TextView
+            android:id="@+id/keyword"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=""
+            app:layout_constraintTop_toTopOf="@id/topPanel"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:textSize="22sp"
+            android:textColor="#ab000d"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="]를 포함한 검색어를 입력해주세요"
+            app:layout_constraintTop_toTopOf="@id/topPanel"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:textSize="17sp"/>
+    </LinearLayout>
+
 
 
     <LinearLayout
@@ -47,15 +74,50 @@
 
 
     <TextView
-        android:id="@+id/tv_result"
+        android:id="@+id/textTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Hello World!"
+        android:text="검색하신 내용의 결과"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+    <TextView
+        android:id="@+id/textResultTitle"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:text="제목 : "
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/textTitle" />
+    <LinearLayout
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="10dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/textResultTitle">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="조회수 : "
+            />
+        <TextView
+            android:id="@+id/textResultView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="조회수 : "
+            />
+    </LinearLayout>
 
 
-
+    <TextView
+        android:id="@+id/wait"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="다른 플레이어들을 잠시 기다려주세요"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/textResultView" />
 </androidx.constraintlayout.widget.ConstraintLayout>
