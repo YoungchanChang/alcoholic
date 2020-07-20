@@ -2,9 +2,19 @@ package com.techtown.alcoholic;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Dialog;
+import android.content.Context;
 import android.os.Bundle;
 
-public class GameResultDialog extends AppCompatActivity {
+import java.util.ArrayList;
+
+public class GameResultDialog extends Dialog {
+
+    public GameResultDialog(Context context) {
+        super(context);
+
+    }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

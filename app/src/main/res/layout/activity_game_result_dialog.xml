@@ -2,17 +2,203 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@drawable/border2"
     tools:context=".GameResultDialog">
 
     <TextView
         android:layout_width="300dp"
         android:layout_height="40dp"
+        android:gravity="center"
         android:text="결과"
+        android:background="@color/alcoholColorDark"
+        android:textColor="#fff"
+        android:textStyle="bold"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
+
+    <LinearLayout
+        android:layout_width="300dp"
+        android:layout_height="300dp"
+        android:background="#fff"
+        android:layout_marginTop="40dp"
+        android:orientation="vertical"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <LinearLayout
+            android:id="@+id/user1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:orientation="vertical">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:orientation="horizontal">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:text="1등"
+                    android:textSize="20sp"
+                    android:gravity="center"
+                    android:textColor="#000"
+                    android:textStyle="bold"/>
+                <View
+                    android:layout_width="1dp"
+                    android:layout_height="30dp"
+                    android:layout_gravity="center"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginEnd="5dp"
+                    android:background="#c3c3c3c3"/>
+                <ImageView
+                    android:src="@drawable/default_user_image"
+                    android:layout_width="60dp"
+                    android:layout_height="match_parent"/>
+                <TextView
+                    android:id="@+id/userNickname1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="30dp"
+                    android:gravity="center"
+                    android:text="닉네임"
+                    android:textStyle="bold"
+                    android:textSize="20sp"/>
+                <TextView
+                    android:id="@+id/resultData1"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:text="결과값"
+                    android:gravity="center"
+                    android:textColor="#000"/>
+
+            </LinearLayout>
+
+            <View
+                android:layout_marginTop="5dp"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#000"/>
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/user2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:orientation="vertical">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:orientation="horizontal">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:text="2등"
+                    android:textSize="20sp"
+                    android:gravity="center"
+                    android:textColor="#000"
+                    android:textStyle="bold"/>
+                <View
+                    android:layout_width="1dp"
+                    android:layout_height="30dp"
+                    android:layout_gravity="center"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginEnd="5dp"
+                    android:background="#c3c3c3c3"/>
+                <ImageView
+                    android:src="@drawable/default_user_image"
+                    android:layout_width="60dp"
+                    android:layout_height="match_parent"/>
+                <TextView
+                    android:id="@+id/userNickname2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="30dp"
+                    android:gravity="center"
+                    android:text="닉네임"
+                    android:textStyle="bold"
+                    android:textSize="20sp"/>
+                <TextView
+                    android:id="@+id/resultData2"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:text="결과값"
+                    android:gravity="center"
+                    android:textColor="#000"/>
+            </LinearLayout>
+
+            <View
+                android:layout_marginTop="5dp"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#000"/>
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/user3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:orientation="vertical">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:orientation="horizontal">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:text="3등"
+                    android:textSize="20sp"
+                    android:gravity="center"
+                    android:textColor="#000"
+                    android:textStyle="bold"/>
+                <View
+                    android:layout_width="1dp"
+                    android:layout_height="30dp"
+                    android:layout_gravity="center"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginEnd="5dp"
+                    android:background="#c3c3c3c3"/>
+                <ImageView
+                    android:src="@drawable/default_user_image"
+                    android:layout_width="60dp"
+                    android:layout_height="match_parent"/>
+                <TextView
+                    android:id="@+id/userNickname3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="30dp"
+                    android:gravity="center"
+                    android:text="닉네임"
+                    android:textStyle="bold"
+                    android:textSize="20sp"/>
+                <TextView
+                    android:id="@+id/resultData3"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:text="결과값"
+                    android:gravity="center"
+                    android:textColor="#000"/>
+            </LinearLayout>
+
+            <View
+                android:layout_marginTop="5dp"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#000"/>
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/btnGoHome"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:text="홈으로 가기"
+            android:layout_gravity="center"
+            android:layout_marginTop="20dp"/>
+    </LinearLayout>
+
+
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

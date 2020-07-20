@@ -65,6 +65,7 @@ public class RoomInfoFragment extends Fragment {
 
         imageViewQRCode = view.findViewById(R.id.QRCode);
         QRFunction();
+        index +=1;
 
         user1 =view.findViewById(R.id.user1);
         user2 =view.findViewById(R.id.user2);
@@ -73,7 +74,7 @@ public class RoomInfoFragment extends Fragment {
         userNickName2 =view.findViewById(R.id.userNickname2);
         userNickName3 =view.findViewById(R.id.userNickname3);
         userNumber=view.findViewById(R.id.userNumber);
-        userNumber.setText(index);
+        userNumber.setText(index+"");
 
         user2.setVisibility(View.GONE);
         user3.setVisibility(View.GONE);
@@ -116,13 +117,23 @@ public class RoomInfoFragment extends Fragment {
                 Bundle data = msg.getData();
                 Log.i(TAG, "handleMessage: 데이테 전달받음"+data.toString());
                 switch (data.getString("isFrom")) {
-                    case "timerThread":
-                        //타이머스레드에서 데이터 받을 때
-
-                        break;
                     case "receiveThread":
                         //소켓수신 스레드에서 데이터 받을 때
+                        String value = data.getString("value");
+                        String token[] =value.split(":");
+                        if (token[0].equals("joinRoom")){
+                            index +=1;
+                            userNumber.setText(index+"");
+                            if (index==2){
+                                user2.setVisibility(View.VISIBLE);
+                                userNickName2.setText(token[1]);
 
+                            }else{
+                                user3.setVisibility(View.VISIBLE);
+                                userNickName3.setText(token[1]);
+                            }
+                        }
+                        //value = "joinRoom:유저닉네임"
                         break;
                     default:
                         Log.i(TAG, "handleMessage: 아무것도 클릭되지 않음");
