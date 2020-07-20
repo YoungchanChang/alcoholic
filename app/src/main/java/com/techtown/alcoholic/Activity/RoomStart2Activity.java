@@ -93,6 +93,9 @@ public class RoomStart2Activity extends AppCompatActivity implements View.OnClic
                 SharedPreferences.Editor editor = pref.edit();
                 editor.putString("captainName", value);
                 editor.commit();
+
+                //value값이 captain
+
                 Intent goHome = new Intent(getApplicationContext(), RoomActivity.class);
                 //user_id를 전달하면 메인홈에서 바로 SELECT문으로 회원정보 가져올 것이다.
                 startActivity(goHome);
