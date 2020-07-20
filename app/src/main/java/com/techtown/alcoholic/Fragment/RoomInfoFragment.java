@@ -87,10 +87,6 @@ public class RoomInfoFragment extends Fragment {
 
     public void QRFunction(){
 
-
-
-
-
         MultiFormatWriter multiFormatWriter = new MultiFormatWriter();
         try{
             /* Encode to utf-8 */
@@ -121,18 +117,10 @@ public class RoomInfoFragment extends Fragment {
                         String value = data.getString("value");
                         String token[] =value.split(":");
                         if (token[0].equals("joinRoom")){
-                            index +=1;
-                            userNumber.setText(index+"");
-                            if (index==2){
-                                user2.setVisibility(View.VISIBLE);
-                                userNickName2.setText(token[1]);
-
-                            }else{
-                                user3.setVisibility(View.VISIBLE);
-                                userNickName3.setText(token[1]);
+                            for (int i =1; i<token.length;i++){
+                                joinRoom(i,token[i]);
                             }
                         }
-                        //value = "joinRoom:유저닉네임"
                         break;
                     default:
                         Log.i(TAG, "handleMessage: 아무것도 클릭되지 않음");
@@ -140,5 +128,22 @@ public class RoomInfoFragment extends Fragment {
                 }
             }
         };
+    }
+    private void joinRoom(int index,String userName){
+        switch (index){
+            case 1:
+                user1.setVisibility(View.VISIBLE);
+                userNickName1.setText(userName);
+                break;
+            case 2:
+                user2.setVisibility(View.VISIBLE);
+                userNickName2.setText(userName);
+                break;
+            case 3:
+                user3.setVisibility(View.VISIBLE);
+                userNickName3.setText(userName);
+                break;
+        }
+
     }
 }
