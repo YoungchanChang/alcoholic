@@ -38,7 +38,7 @@ public class RoomStart2Activity extends AppCompatActivity implements View.OnClic
         imageMakeRoom.setOnClickListener(this);
 
         imageFindRoom = findViewById(R.id.imageFindRoom);
-
+        imageFindRoom.setOnClickListener(this);
 
 
 
@@ -52,6 +52,12 @@ public class RoomStart2Activity extends AppCompatActivity implements View.OnClic
             case R.id.imageMakeRoom:
                 showDialogue();
                 ad.show();
+                break;
+            case R.id.imageFindRoom:
+                Intent goHome = new Intent(getApplicationContext(), RoomSearchingActivity.class);
+                //user_id를 전달하면 메인홈에서 바로 SELECT문으로 회원정보 가져올 것이다.
+                startActivity(goHome);
+
 
                 break;
         }
@@ -87,13 +93,13 @@ public class RoomStart2Activity extends AppCompatActivity implements View.OnClic
                 SharedPreferences.Editor editor = pref.edit();
                 editor.putString("captainName", value);
                 editor.commit();
-
-                dialog.dismiss();     //닫기
-
                 Intent goHome = new Intent(getApplicationContext(), RoomActivity.class);
                 //user_id를 전달하면 메인홈에서 바로 SELECT문으로 회원정보 가져올 것이다.
                 startActivity(goHome);
                 finish();
+                dialog.dismiss();     //닫기
+
+
 
 
             }

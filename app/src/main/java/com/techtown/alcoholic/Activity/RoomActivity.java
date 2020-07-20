@@ -51,9 +51,6 @@ public class RoomActivity extends AppCompatActivity {
 
         context=this;
 
-
-
-
         fragmentManager = getSupportFragmentManager();
 
         btnRoomGameListFragment= findViewById(R.id.btn_RoomGameListFragment);
