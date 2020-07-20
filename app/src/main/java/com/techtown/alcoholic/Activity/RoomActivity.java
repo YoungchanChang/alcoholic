@@ -53,11 +53,6 @@ public class RoomActivity extends AppCompatActivity {
     //QR코드 값 받기
     private String textForQRCode;
 
-    SocketSendThread socketSendThread;
-    SocketReceiveThread socketReceiveThread;
-
-    Handler handler;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -93,42 +88,6 @@ public class RoomActivity extends AppCompatActivity {
         fragmentTransaction.replace(R.id.FrameLayout,roomInfoFragment).commitAllowingStateLoss();
         setFrag(0);
 
-        handler = getHandler();
-        socketReceiveThread = SocketReceiveThread.getInstance(getString(R.string.server_ip),handler, SingleToneSocket.getInstance());
-        socketSendThread = SocketSendThread.getInstance(getString(R.string.server_ip),SingleToneSocket.getInstance());
-
-    }
-
-    @SuppressLint("HandlerLeak")
-    private Handler getHandler() {
-        return new Handler(){
-            @SuppressLint("SetTextI18n")
-            @Override
-            public void handleMessage(@NonNull Message msg) {
-                super.handleMessage(msg);
-                Bundle data = msg.getData();
-                Log.i(TAG, "handleMessage: 데이테 전달받음"+data.toString());
-                switch (data.getString("isFrom")) {
-                    case "receiveThread":
-                        //소켓수신 스레드에서 데이터 받을 때
-                        String value = data.getString("value");
-//                        new JSONArray(value)
-                        Toast.makeText(RoomActivity.this,value,Toast.LENGTH_SHORT).show();
-                        String[] tokens = value.split(":");
-                            switch(tokens[0]){
-                                case "joinRoom":
-                                    String newUserNick = tokens[1];
-
-                                    break;
-
-                        }
-                        break;
-                    default:
-                        Log.i(TAG, "handleMessage: 아무것도 클릭되지 않음");
-                        break;
-                }
-            }
-        };
     }
 
 
