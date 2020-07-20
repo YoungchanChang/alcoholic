@@ -84,10 +84,13 @@ public class RoomActivity extends AppCompatActivity {
 
         SharedPreferences pref= this.getSharedPreferences("USER_INFO", Activity.MODE_PRIVATE);
         textForQRCode = pref.getString("captainName", "");
-
+        String isCaptain = pref.getString("captainTRUE", "");
+        String userName = pref.getString("userName", "");
         imageViewQRCode = findViewById(R.id.QRCode);
         QRFunction();
         index +=1;
+
+
 
         user1 =findViewById(R.id.user1);
         user2 =findViewById(R.id.user2);
@@ -100,7 +103,15 @@ public class RoomActivity extends AppCompatActivity {
 
         user2.setVisibility(View.GONE);
         user3.setVisibility(View.GONE);
-        userNickName1.setText(textForQRCode);
+        //userNickName1.setText(textForQRCode);
+
+        if(isCaptain.equals("TRUE")){
+            userNickName1.setText("방장 닉네임 : " + textForQRCode);
+        }else if(isCaptain.equals("FALSE")){
+            userNickName1.setText("방장 닉네임 : " + textForQRCode);
+            user2.setVisibility(View.VISIBLE);
+            userNickName2.setText("플레이어 닉네임 : " + userName);
+        }
 
         handler = getHandler();
         socketReceiveThread = SocketReceiveThread.getInstance(getString(R.string.server_ip),handler, SingleToneSocket.getInstance());
@@ -133,10 +144,12 @@ public class RoomActivity extends AppCompatActivity {
                 super.handleMessage(msg);
                 Bundle data = msg.getData();
                 Log.i(TAG, "handleMessage: 데이테 전달받음"+data.toString());
+                Log.i(TAG, "handleMessage: 데이테 전달받음"+data.getString("isFrom"));
                 switch (data.getString("isFrom")) {
                     case "receiveThread":
                         //소켓수신 스레드에서 데이터 받을 때
                         String value = data.getString("value");
+                        Log.i(TAG, "handleMessage!!! "+value);
                         String token[] =value.split(":");
                         if (token[0].equals("joinRoom")){
                             for (int i =1; i<token.length;i++){

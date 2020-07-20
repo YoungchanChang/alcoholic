@@ -35,8 +35,11 @@ public class GameReadyActivity extends AppCompatActivity {
         Integer gameGenre = get_intent.getIntExtra("gameGenre", 1);
 
 
-        //버튼 클릭시 -> 특정 정보 서버에게 보내지면
-        //쓰레드로
+        //TODO
+        //버튼 클릭시 -> 정보[어떤 종류의 게임이 서버에 보내졌다]가 서버에 보내진다.
+        //서버는 해당 정보를 유저객체들에게 보낸다.
+        //유저들이 서비스에서 해당 정보 받으면 종류에 따라서 액티비티 실행한다.
+
         switch (gameGenre){
             case 1:
                 imageName.setImageDrawable(getResources().getDrawable(R.drawable.dictionary, getApplicationContext().getTheme()));

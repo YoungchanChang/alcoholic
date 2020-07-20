@@ -143,6 +143,7 @@ public class RoomStart2Activity extends AppCompatActivity implements View.OnClic
                 SharedPreferences pref = getSharedPreferences("USER_INFO", Activity.MODE_PRIVATE);;
                 SharedPreferences.Editor editor = pref.edit();
                 editor.putString("captainName", value);
+                editor.putString("captainTRUE", "TRUE");
                 editor.putString("userName", value);
                 editor.commit();
 
@@ -190,6 +191,7 @@ public class RoomStart2Activity extends AppCompatActivity implements View.OnClic
                 SharedPreferences pref = getSharedPreferences("USER_INFO", Activity.MODE_PRIVATE);;
                 SharedPreferences.Editor editor = pref.edit();
                 editor.putString("userName", value);
+                editor.putString("captainTRUE", "FALSE");
                 editor.commit();
 
                 //value값이 captain

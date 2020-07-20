@@ -55,11 +55,32 @@
                 android:textColor="#fff"
                 android:textStyle="bold"
                 android:gravity="center" />
-            <ImageView
-                android:id="@+id/QRCode"
-                android:background="@drawable/border2"
-                android:layout_width="150dp"
-                android:layout_height="150dp"/>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <ImageView
+                    android:id="@+id/QRCode"
+                    android:layout_width="150dp"
+                    android:layout_height="150dp"
+                    android:background="@drawable/border2"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/textView8"
+                    android:layout_width="139dp"
+                    android:layout_height="63dp"
+                    android:layout_marginTop="52dp"
+                    android:text="QR코드로 친구를 초대하세요."
+                    android:textColor="#040404"
+                    android:textSize="18sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.915"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
         </LinearLayout>
 
 
@@ -90,23 +111,26 @@
                     android:text="플레이어 "
                     android:textColor="#fff"
                     android:textStyle="bold" />
-                <TextView
-                    android:id="@+id/userNumber"
-                    android:layout_width="wrap_content"
-                    android:layout_height="30dp"
-                    android:gravity="top"
-                    android:textColor="#f57f17"
-                    android:textStyle="bold"
-                    android:textSize="20sp"
-                    android:layout_marginStart="2dp"
-                    android:text="0"/>
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:gravity="center"
-                    android:text=" 명"
+                    android:text="목록"
                     android:textColor="#fff"
                     android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/userNumber"
+                    android:layout_width="wrap_content"
+                    android:layout_height="30dp"
+                    android:layout_marginStart="2dp"
+                    android:gravity="top"
+                    android:text="0"
+                    android:textColor="#f57f17"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    android:visibility="invisible" />
 
             </LinearLayout>
 

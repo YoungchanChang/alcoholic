@@ -114,12 +114,16 @@ public class RoomSearchingActivity extends AppCompatActivity {
             public void receiveDetections(Detector.Detections<Barcode> detections) {
                 // 바코드가 인식되었을 때 무슨 일을 할까?
                 final SparseArray<Barcode> barcodes = detections.getDetectedItems();
-                if(barcodes.size() != 0) {
+
+                Boolean a = true;
+
+                if(barcodes.size() != 0 && a == true) {
                     barcodeContents = barcodes.valueAt(0).displayValue; // 바코드 인식 결과물
 
                     //바코드 인식했을 때 결과가 나와
                     Log.d("Detection", barcodeContents);
 
+                    a = false;
                     //1. 서버에 해당되는 결과를 보내.
                     //2. 방이 일치할 때, 처리해야됨.
                     //로그인 성공시에 유저 info 저장시에 쓰일 SharedPref
@@ -133,12 +137,13 @@ public class RoomSearchingActivity extends AppCompatActivity {
                     String request = "joinRoom:"+userName+":"+barcodeContents;
                     socketSendThread.sendData(request);
 
+
                     Intent goHome = new Intent(getApplicationContext(), RoomActivity.class);
                     //user_id를 전달하면 메인홈에서 바로 SELECT문으로 회원정보 가져올 것이다.
                     startActivity(goHome);
-                    finish();
-                    cameraSource.stop();
                 }
+
+
 
 
             }
@@ -159,12 +164,20 @@ public class RoomSearchingActivity extends AppCompatActivity {
                 super.handleMessage(msg);
                 Bundle data = msg.getData();
                 Log.i(TAG, "handleMessage: 데이터 전달받음"+data.toString());
+                Log.i(TAG, "handleMessage: 데이터 전달받음"+data.getString("isFrom"));
                 switch (data.getString("isFrom")) {
                     case "receiveThread":
+
                         //소켓수신 스레드에서 데이터 받을 때
                         String value = data.getString("value");
-//                        Toast.makeText(RoomSearchingActivity.this,value,Toast.LENGTH_SHORT).show(); Toast.makeText(RoomSearchingActivity.this,value,Toast.LENGTH_SHORT).show();
+                        Log.d(TAG, "handleMessage123 " +value);
+                        Toast.makeText(RoomSearchingActivity.this,value,Toast.LENGTH_SHORT).show();
                         String[] tokens = value.split(":");
+
+                        for(int i=0; i<tokens.length; i++){
+                            Log.d(TAG, "handleMessage "+tokens[i]);
+                        }
+
                         if("joinRoom".equals(tokens[0])&&userName.equals(tokens[1])) {
                             //방 생성완료 시에
                             Intent intent = new Intent(RoomSearchingActivity.this,RoomActivity.class);
