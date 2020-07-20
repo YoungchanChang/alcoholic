@@ -19,13 +19,13 @@ public class
 GameResultDialog extends Dialog {
     private Context context;
     TextView textUserNickname1, textUserNickname2, textUserNickname3,textUserScore1,textUserScore2,textUserScore3;
-     JSONArray jsonArray;
-     Button btnGoHome;
+    ArrayList<GameResultItem> gameResultItems;
+    Button btnGoHome;
 
-    public GameResultDialog(Context context, JSONArray array) {
+    public GameResultDialog(Context context,ArrayList<GameResultItem> gameResultItem) {
         super(context);
         this.context=context;
-        this.jsonArray=array;
+        this.gameResultItems = gameResultItem;
     }
 
 
@@ -49,18 +49,18 @@ GameResultDialog extends Dialog {
             }
         });
 
-        try{
-            for (int i=0; i<jsonArray.length() ;i++){
-                JSONObject jsonChild = jsonArray.getJSONObject(i);
-                String userNickname= jsonChild.getString("userNickname");
-                String userScore= jsonChild.getString("userScore");
-                //결과값 보여줌
-                insertTextView(i,userNickname,userScore);
-
-            }
-        }catch (JSONException e){
-            e.printStackTrace();
-        }
+//        try{
+////            for (int i=0; i< ;i++){
+////                JSONObject jsonChild = .getJSONObject(i);
+////                String userNickname= jsonChild.getString("userNickname");
+////                String userScore= jsonChild.getString("userScore");
+////                //결과값 보여줌
+////                insertTextView(i,userNickname,userScore);
+////
+////            }
+//        }catch (JSONException e){
+//            e.printStackTrace();
+//        }
 
 
     }
