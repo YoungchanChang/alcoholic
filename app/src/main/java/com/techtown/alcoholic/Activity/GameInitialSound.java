@@ -61,7 +61,33 @@ public class GameInitialSound extends AppCompatActivity {
 
     Long startTimestamp;
     Long endTimestamp;
-    DisplayMetrics dm = getApplicationContext().getResources().getDisplayMetrics(); //디바이스 화면크기를 구하기위해
+//
+    DisplayMetrics dm;
+    //0.
+    //1. 게임 시간이 0이 되면 시간초 관련 데이터를 서버에 보내
+    //2. 특정 조건을 완료하면 데이터를 서버에 보내
+    //2-1. 완료했으면 시간초가 멈춰야되. (멈추는 것 처럼 보여야되)
+    //내가 찍으면 시간초 관련된 뷰가 invisible처리
+    //3. 서버에서 3개의 관련 데이터가 왔을 때 다이얼로그 띄워준다.
+    //0초가 됬을 때는 안 보내져야 한다.
+
+
+    //게임 시작 기록하는 변수
+    long startTime;
+    //게임 끝났을 시간을 기록하는 변수, startTime과의 초가 게임 시간 차이이다.
+    long endTime;
+
+    //시간초가 실제로 내려가는 쓰레드
+    TimerThread timerThread;
+    //몇초인지 보여주는 뷰 ( Layout에 있어야 한다 )
+    TextView textTimeLeft;
+    //핸들러(쓰레드의 값을 보여주는 핸들러 객체)
+
+    //내가 지정하고 싶은 시간
+    int timeLimit = 15;
+
+    //특정조건 만족했을 시에 서버에 정보를 보내주지 않게 하는 변수
+    boolean isOver = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -103,6 +129,17 @@ public class GameInitialSound extends AppCompatActivity {
 
             }
         });
+
+
+
+        handler = getHandler();
+        timerThread = new TimerThread(timeLimit, handler);
+        timerThread.start();
+        textTimeLeft = findViewById(R.id.textTimeLeft);
+        textTimeLeft.setText(timeLimit+"초 남았습니다");
+        socketSendThread = socketSendThread.getInstance(getString(R.string.server_ip), SingleToneSocket.getInstance());
+
+         dm = getApplicationContext().getResources().getDisplayMetrics(); //디바이스 화면크기를 구하기위해
     }
 
     protected void onResume() {
@@ -135,6 +172,7 @@ public class GameInitialSound extends AppCompatActivity {
                                 btnEnter.setVisibility(View.GONE);
 
                             }
+
                             endTimestamp = System.currentTimeMillis();
                             String request = "gameResult:"+(endTimestamp-startTimestamp);
                             socketSendThread.sendData(request);
@@ -239,21 +277,43 @@ public class GameInitialSound extends AppCompatActivity {
                         String value = data.getString("value");
                         try {
                             JSONObject jsonObject = new JSONObject(value);
-                            if (jsonObject.length() ==3){
                                 for (int i=0; i<jsonObject.length();i++){
                                    String token[] = jsonObject.getString(i+"").split(":");
                                     //token 0 유저 닉네임
                                     //token 1 결과값
                                     gameResultItems.add(new GameResultItem(token[0],token[1]));
 
-                                }
-                                showDialog();
+
+
                             }
 
                         }catch (JSONException e){ e.printStackTrace();}
 
 
                         //value = "joinRoom:유저닉네임"
+                        break;
+                    case "timerThread":
+                        //타이머스레드에서 데이터 받을 때
+
+                        Log.d(TAG, "TimeLeft " + timeLimit);
+                        if(data.getInt("second")==0) {
+                            textTimeLeft.setText("종료되었습니다");
+
+                            Log.d(TAG, "TimeLeftYet " + timeLimit);
+                            //게임결과 전송
+                            if(!isOver) {
+                                Log.d(TAG, "TimeLeftEnd " + timeLimit);
+                                //count변수 15초가 흘러간다.
+                                //TODO
+//                                    String request = "gameResult:"+Integer.toString(timeLimit);
+//                                    socketSendThread.sendData(request);
+                            }
+
+                        }else {
+                            textTimeLeft.setText(data.getInt("second")+"초 남았습니다");
+                        }
+
+
                         break;
                     default:
                         Log.i(TAG, "handleMessage: 아무것도 클릭되지 않음");
@@ -279,4 +339,9 @@ public class GameInitialSound extends AppCompatActivity {
         });
         custom_dialog.show();
     }
+
+
+
+
+
 }
